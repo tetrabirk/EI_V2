@@ -1,0 +1,42 @@
+<?php
+
+namespace App\DataFixtures;
+
+use App\Entity\Site;
+use Doctrine\Common\DataFixtures\DependentFixtureInterface;
+use Doctrine\Common\Persistence\ObjectManager;
+
+
+class SiteFixtures extends BaseFixtures implements DependentFixtureInterface
+{
+    public function loadData(ObjectManager $manager)
+    {
+        for ($i=0;$i<self::AMOUNTOFSITES;$i++){
+
+            $site = new Site();
+
+            $site->setShortName('ABC');
+            $site->setName('lorem ipsum dolor sit');
+            $site->setAddress('rue de rien 25 - 4598 kklpart');
+            $site->setCountry('bob');
+            $site->setActive(true);
+
+//            $site->setShortName(strtoupper($this->faker->lexify('???')));
+//            $site->setName($this->faker->sentence(4));
+//            $site->setAddress($this->faker->address);
+//            $site->setCountry(self::$COUNTRIES[array_rand(self::$COUNTRIES)]);
+//            $site->setLatitude($this->faker->latitude(50.195540, 50.70272));
+//            $site->setLongitude($this->faker->longitude(4.241172, 6.086875));
+
+            $manager->persist($site);
+
+        }
+
+        $manager->flush();
+    }
+
+    public function getDependencies()
+    {
+        // TODO: Implement getDependencies() method.
+    }
+}

@@ -4,7 +4,7 @@
 *	legal
 
 ## HOME
-afficher les dernières notifications
+*	afficher les dernières notifications
 *	link to all notification
 *	menu1: historique, chantier, personnes, matériaux
 *	menu2: paramètres, notifications, nouvelle entrée
@@ -12,39 +12,39 @@ afficher les dernières notifications
 *	menu3 (quickaccess): au choix : new entry, new person (admin), new site (admin), map, link to specifik site, ...
 
 ## HISTORIQUE
-afficher les dernières entrées (voir WorkDay list)
-possibilité de trié par date, site, author, worker, validated, flagged(admin)
+*	afficher les dernières entrées (voir WorkDay list)
+*	possibilité de trié par date, site, author, worker, validated, flagged(admin)
 *	menu3 (shortcut): mon historique auteur, mon historique ouvrier
 
 ## CHANTIERS
-afficher la map des chantier actif
-afficher les chantier actif (voir Site list)
-searchbar
-possibilité de trié par date (création, WD récent), proximité (géolocatlisation),Actif, to validate/flagged (admin)
+*	afficher la map des chantier actif
+*	afficher les chantier actif (voir Site list)
+*	searchbar
+*	possibilité de trié par date (création, WD récent), proximité (géolocatlisation),Actif, to validate/flagged (admin)
 *	menu3 (shortcut): add site (voir Add Site), Site where I worked
 
 ## PERSONNES
-afficher la liste des personne
-searchbar
-possibilité de trié par type, par entreprise (par chantier)
+*	afficher la liste des personne
+*	searchbar
+*	possibilité de trié par type, par entreprise (par chantier)
 *	menu3 (shortcut): add person (voir Add Person), Person whis whom I worked
 
 ## MATERIAUX
 (todo)
 
 ## PARAMETRES
-manage données personnelles
-manage shortcuts
-manage color (darkmode)
-choose language
+*	manage données personnelles
+*	manage shortcuts
+*	manage color (darkmode)
+*	choose language
 
 ## NOTIFICATIONS
-nouvelle notifications trié par type (voir notification list)
-all non validated WD
-all non validated changes (user)
-all flagged WD
-all non-exported Site with modified Tasks
-menu3 : all notifications par ordre chronologique (historique)
+*	nouvelle notifications trié par type (voir notification list)
+*	all non validated WD
+*	all non validated changes (user)
+*	all flagged WD
+*	all non-exported Site with modified Tasks
+*	menu3 : all notifications par ordre chronologique (historique)
 
 
 ## WorkDay List------------------
@@ -174,10 +174,10 @@ menu3 : all notifications par ordre chronologique (historique)
 
 
 ## TODO:
-add task number
-add flagged + comment to WD
-add shortcuts to USER
-add person category (ouvrier, fournisseur, architecte, client,...) (create pictos)
-EASTER EGG (emoji fleur dans le legal -> rainbow background + cat gifs)
-add personXsite Role
-1 mail / day /week with all notifications not opened
+*	add task number
+*	add flagged + comment to WD
+*	add shortcuts to USER
+*	add person category (ouvrier, fournisseur, architecte, client,...) (create pictos)
+*	EASTER EGG (emoji fleur dans le legal -> rainbow background + cat gifs)
+*	add personXsite Role
+*	1 mail / day /week with all notifications not opened

@@ -11,12 +11,6 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Worker extends User
 {
-    /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer")
-     */
-    private $id;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\CompletedTask", mappedBy="worker")
@@ -34,12 +28,7 @@ class Worker extends User
         $this->workDay = new ArrayCollection();
     }
 
-    public function getId(): ?int
-    {
-        return $this->id;
-    }
-
-    /**
+     /**
      * @return Collection|CompletedTask[]
      */
     public function getCompletedTasks(): Collection

@@ -9,14 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class User extends Person
 {
-    /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer")
-     */
-    private $id;
-
-    /**
+     /**
      * @ORM\Column(type="string", length=255)
      */
     private $password;
@@ -30,16 +23,6 @@ class User extends Person
      * @ORM\Column(type="boolean")
      */
     private $active;
-
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $userType;
-
-    public function getId(): ?int
-    {
-        return $this->id;
-    }
 
     public function getPassword(): ?string
     {
@@ -73,18 +56,6 @@ class User extends Person
     public function setActive(bool $active): self
     {
         $this->active = $active;
-
-        return $this;
-    }
-
-    public function getUserType(): ?string
-    {
-        return $this->userType;
-    }
-
-    public function setUserType(string $userType): self
-    {
-        $this->userType = $userType;
 
         return $this;
     }

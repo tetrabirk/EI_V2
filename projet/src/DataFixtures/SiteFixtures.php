@@ -36,7 +36,6 @@ class SiteFixtures extends BaseFixtures
 
             $this->addRefToIndex(self::REF_SITE,$site,$i);
 
-
             $manager->persist($site);
         }
     }

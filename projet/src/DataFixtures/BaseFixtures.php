@@ -33,6 +33,7 @@ abstract class BaseFixtures extends Fixture
     const REF_PERSON = "person";
     const REF_ADMIN = "admin";
     const REF_WORKER = "worker";
+    const REF_AUTHOR = "author";
     const REF_COMPLETED_TASK = "completed_task";
     const REF_WORK_DAY = "work_day";
 
@@ -49,7 +50,7 @@ abstract class BaseFixtures extends Fixture
     /**@var \Cocur\Slugify\SlugifyInterface**/
     protected $slugify;
 
-    protected $referencesIndex = [];
+    protected static $referencesIndex = [];
 
 
     abstract protected function loadData(ObjectManager $manager);
@@ -66,17 +67,48 @@ abstract class BaseFixtures extends Fixture
     {
         if ($ref === null){
             if (!isset($this->referencesIndex[$className])) {
-                $this->referencesIndex[$className] = [];
+                self::$referencesIndex[$className] = [];
             }
             $this->addReference($className.'_'.$i, $object);
-            array_push($this->referencesIndex[$className], $i);
+            array_push( self::$referencesIndex[$className], $i);
+
         }else{
             if (!isset($this->referencesIndex[$className][$i])) {
-                $this->referencesIndex[$className][$i] = [];
+                self::$referencesIndex[$className][$i] = [];
             }
             $this->addReference($className.'_'.$i.'_'. $ref, $object);
-            array_push($this->referencesIndex[$className][$i], $ref);
+            array_push( self::$referencesIndex[$className][$i], $ref);
+
         }
     }
+    public function randNumberArray(int $min,int $max,int $size){
+        $random_number_array = range($min, $max);
+        shuffle($random_number_array );
+        $random_number_array = array_slice($random_number_array ,0,$size);
+        return $random_number_array;
+    }
 
+//    public function genReferencesIndex(){
+//        $repoArray = ($this->referenceRepository->getReferences());
+//        $refRepo = array_keys($repoArray);
+//
+//        $refIndex = [];
+//        foreach ($refRepo as $ref){
+//            $refArray = explode('_',$ref);
+//            $className=array_shift($refArray);
+//            if (!isset($refIndex[$className]))
+//            {
+//                $refIndex[$className]=[];
+//            }
+//            if(count($refArray)>1){
+//                if(!isset($refIndex[$className][$refArray[0]])){
+//                    $refIndex[$className][$refArray[0]] = [];
+//                }
+//                array_push($refIndex[$className][array_shift($refArray)],$refArray);
+//            }else{
+//                array_push($refIndex[$className],$refArray[0]);
+//            }
+//      }
+//        return $refIndex;
+//    }
 }

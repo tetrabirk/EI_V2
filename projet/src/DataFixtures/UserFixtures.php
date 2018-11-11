@@ -64,11 +64,12 @@ class UserFixtures extends BaseFixtures
 
                 if ($i <= (self::AMOUNT_OF_AUTHORS+1)) {
                     $worker->setActive(true);
+                    $this->addRefToIndex(self::REF_AUTHOR,$worker,$i-1);
                 } else {
                     $worker->setActive(false);
                 }
 
-                $this->addRefToIndex(self::REF_WORKER,$worker,$i);
+                $this->addRefToIndex(self::REF_WORKER,$worker,$i-1);
                 $manager->persist($worker);
             }
         }

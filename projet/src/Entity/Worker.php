@@ -22,10 +22,16 @@ class Worker extends User
      */
     private $workDay;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\WorkDay", mappedBy="author")
+     */
+    private $redactedWorkDays;
+
     public function __construct()
     {
         $this->completedTasks = new ArrayCollection();
         $this->workDay = new ArrayCollection();
+        $this->redactedWorkDays = new ArrayCollection();
     }
 
      /**
@@ -80,6 +86,37 @@ class Worker extends User
     {
         if ($this->workDay->contains($workDay)) {
             $this->workDay->removeElement($workDay);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|WorkDay[]
+     */
+    public function getRedactedWorkDays(): Collection
+    {
+        return $this->redactedWorkDays;
+    }
+
+    public function addRedactedWorkDay(WorkDay $redactedWorkDay): self
+    {
+        if (!$this->redactedWorkDays->contains($redactedWorkDay)) {
+            $this->redactedWorkDays[] = $redactedWorkDay;
+            $redactedWorkDay->setAuthor($this);
+        }
+
+        return $this;
+    }
+
+    public function removeRedactedWorkDay(WorkDay $redactedWorkDay): self
+    {
+        if ($this->redactedWorkDays->contains($redactedWorkDay)) {
+            $this->redactedWorkDays->removeElement($redactedWorkDay);
+            // set the owning side to null (unless already changed)
+            if ($redactedWorkDay->getAuthor() === $this) {
+                $redactedWorkDay->setAuthor(null);
+            }
         }
 
         return $this;

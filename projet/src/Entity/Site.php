@@ -68,9 +68,15 @@ class Site
      */
     private $tasks;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\WorkDay", mappedBy="site")
+     */
+    private $workDays;
+
     public function __construct()
     {
         $this->tasks = new ArrayCollection();
+        $this->workDays = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -211,6 +217,37 @@ class Site
             // set the owning side to null (unless already changed)
             if ($task->getSite() === $this) {
                 $task->setSite(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|WorkDay[]
+     */
+    public function getWorkDays(): Collection
+    {
+        return $this->workDays;
+    }
+
+    public function addWorkDay(WorkDay $workDay): self
+    {
+        if (!$this->workDays->contains($workDay)) {
+            $this->workDays[] = $workDay;
+            $workDay->setSite($this);
+        }
+
+        return $this;
+    }
+
+    public function removeWorkDay(WorkDay $workDay): self
+    {
+        if ($this->workDays->contains($workDay)) {
+            $this->workDays->removeElement($workDay);
+            // set the owning side to null (unless already changed)
+            if ($workDay->getSite() === $this) {
+                $workDay->setSite(null);
             }
         }
 

@@ -33,6 +33,18 @@ class WorkDay
      */
     private $workers;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Worker", inversedBy="redactedWorkDays")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $author;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Site", inversedBy="workDays")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $site;
+
     public function __construct()
     {
         $this->workers = new ArrayCollection();
@@ -92,6 +104,30 @@ class WorkDay
             $this->workers->removeElement($worker);
             $worker->removeWorkDay($this);
         }
+
+        return $this;
+    }
+
+    public function getAuthor(): ?Worker
+    {
+        return $this->author;
+    }
+
+    public function setAuthor(?Worker $author): self
+    {
+        $this->author = $author;
+
+        return $this;
+    }
+
+    public function getSite(): ?Site
+    {
+        return $this->site;
+    }
+
+    public function setSite(?Site $site): self
+    {
+        $this->site = $site;
 
         return $this;
     }

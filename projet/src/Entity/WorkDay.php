@@ -94,7 +94,6 @@ class WorkDay
             $this->workers[] = $worker;
             $worker->addWorkDay($this);
         }
-
         return $this;
     }
 

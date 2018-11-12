@@ -73,10 +73,16 @@ class Site
      */
     private $workDays;
 
+    /**
+ * @ORM\OneToMany(targetEntity="Participation", mappedBy="site")
+ */
+    private $participations;
+
     public function __construct()
     {
         $this->tasks = new ArrayCollection();
         $this->workDays = new ArrayCollection();
+        $this->participations = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -248,6 +254,37 @@ class Site
             // set the owning side to null (unless already changed)
             if ($workDay->getSite() === $this) {
                 $workDay->setSite(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Participation[]
+     */
+    public function getParticipations(): Collection
+    {
+        return $this->participations;
+    }
+
+    public function addParticipation(Participation $participation): self
+    {
+        if (!$this->participations->contains($participation)) {
+            $this->participations[] = $participation;
+            $participation->setSite($this);
+        }
+
+        return $this;
+    }
+
+    public function removeParticipant(Participation $participation): self
+    {
+        if ($this->participations->contains($participation)) {
+            $this->participations->removeElement($participation);
+            // set the owning side to null (unless already changed)
+            if ($participation->getSite() === $this) {
+                $participation->setSite(null);
             }
         }
 

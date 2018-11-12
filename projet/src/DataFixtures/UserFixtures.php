@@ -47,7 +47,6 @@ class UserFixtures extends BaseFixtures
 
             if ($i === 0) {
                 $admin = $user;
-                $admin->setType('employee');
                 $admin->setActive(true);
                 $admin->setEmail('admin@admin.com');
                 $admin->setPassword('password'); //TODO encrypt passwords
@@ -57,7 +56,6 @@ class UserFixtures extends BaseFixtures
 
             } else {
                 $worker = $user;
-                $worker->setType('worker');
                 $worker->setActive(true);
                 $worker->setEmail($email);
                 $worker->setPassword('password'); //TODO encrypt passwords

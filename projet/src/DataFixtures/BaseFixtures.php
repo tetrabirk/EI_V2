@@ -21,6 +21,9 @@ abstract class BaseFixtures extends Fixture
     const MIN_AMOUNT_L1_TASK=7;
     const MAX_AMOUNT_L1_TASK=15;
 
+    const MIN_AMOUNT_OF_PARTICIPANT=3;
+    const MAX_AMOUNT_OF_PARTICIPANT=10;
+
     const MIN_AMOUNT_L2_TASK=0;
     const MAX_AMOUNT_L2_TASK=5;
 
@@ -36,8 +39,9 @@ abstract class BaseFixtures extends Fixture
     const REF_AUTHOR = "author";
     const REF_COMPLETED_TASK = "completed_task";
     const REF_WORK_DAY = "work_day";
+    const REF_PARTICIPATION = "participation";
 
-    protected static $personTypes = ['architecte','fournisseur','client'];
+    protected static $personRoles= ['architecte','fournisseur','client'];
     protected static $materialTypes = ['panneaux','chevrons','préfabriqués','pierre','sac','tuyauterie'];
 
     protected static $countries = ['Belgium', 'Germany', 'Luxembourg'];
@@ -87,6 +91,7 @@ abstract class BaseFixtures extends Fixture
         $random_number_array = array_slice($random_number_array ,0,$size);
         return $random_number_array;
     }
+
 
 //    public function genReferencesIndex(){
 //        $repoArray = ($this->referenceRepository->getReferences());

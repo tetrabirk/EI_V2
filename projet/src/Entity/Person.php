@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -48,10 +49,11 @@ class Person
      */
     private $company;
 
+
     /**
-     * @ORM\Column(type="string", length=255, nullable=true)
+     * @ORM\OneToMany(targetEntity="Participation", mappedBy="site")
      */
-    private $type;
+    private $participations;
 
     public function getId(): ?int
     {
@@ -130,14 +132,33 @@ class Person
         return $this;
     }
 
-    public function getType(): ?string
+    /**
+     * @return Collection|Participation[]
+     */
+    public function getParticipations(): Collection
     {
-        return $this->type;
+        return $this->participations;
     }
 
-    public function setType(?string $type): self
+    public function addParticipation(Participation $participation): self
     {
-        $this->type = $type;
+        if (!$this->participations->contains($participation)) {
+            $this->participations[] = $participation;
+            $participation->setSite($this);
+        }
+
+        return $this;
+    }
+
+    public function removeParticipant(Participation $participation): self
+    {
+        if ($this->participations->contains($participation)) {
+            $this->participations->removeElement($participation);
+            // set the owning side to null (unless already changed)
+            if ($participation->getSite() === $this) {
+                $participation->setSite(null);
+            }
+        }
 
         return $this;
     }

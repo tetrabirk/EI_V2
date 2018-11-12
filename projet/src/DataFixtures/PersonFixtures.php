@@ -34,7 +34,6 @@ class PersonFixtures extends BaseFixtures
             $person->setPhone1($this->faker->phoneNumber);
             $person->setPhone2($this->faker->optional(0.5)->phoneNumber);
 
-            $person->setType($this->faker->randomElement(self::$personTypes));
             $this->addRefToIndex(self::REF_PERSON,$person,$i);
             $manager->persist($person);
         }

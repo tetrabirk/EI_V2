@@ -2,13 +2,16 @@
 
 namespace App\DataFixtures;
 
+use App\Entity\Participation;
+use App\Entity\Person;
 use App\Entity\Task;
+use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use Faker\Factory;
 use Faker\Generator;
 use App\Entity\Site;
 
-class SiteFixtures extends BaseFixtures
+class SiteFixtures extends BaseFixtures implements DependentFixtureInterface
 {
 
     public function loadData(ObjectManager $manager)
@@ -33,6 +36,7 @@ class SiteFixtures extends BaseFixtures
             $site->setActive(true);
 
             $this->genTasks($manager,$site,$i);
+            $this->genParticipations($manager,$site,$i);
 
             $this->addRefToIndex(self::REF_SITE,$site,$i);
 
@@ -44,7 +48,8 @@ class SiteFixtures extends BaseFixtures
     {
         $amountLevel1 = rand(self::MIN_AMOUNT_L1_TASK, self::MAX_AMOUNT_L1_TASK);
 
-        for ($j = 1; $j <= $amountLevel1; $j++) {
+        for ($j = 1; $j <= $amountLevel1; $j++)
+        {
             $amountLevel2 = rand(self::MIN_AMOUNT_L2_TASK, self::MAX_AMOUNT_L2_TASK);
             for ($k = 0; $k < $amountLevel2; $k++) {
                 $task = new Task();
@@ -63,6 +68,34 @@ class SiteFixtures extends BaseFixtures
                 $manager->persist($task);
             }
         }
+    }
+    public function genParticipations(ObjectManager $manager, Site $site, $i)
+    {
+        $amountParticipant = rand(self::MIN_AMOUNT_OF_PARTICIPANT,self::MAX_AMOUNT_OF_PARTICIPANT);
+
+        $personRefs = self::randNumberArray(0,self::MAX_AMOUNT_OF_PARTICIPANT-1,$amountParticipant);
+
+        foreach($personRefs as $personRef)
+        {
+            $participation = new Participation();
+            /** @var $person Person */
+            $person=$this->getReference(self::REF_PERSON.'_'.$personRef);
+            $participation->setPerson($person);
+            $participation->setRole($this->faker->randomElement(self::$personRoles));
+            $participation->setSite($site);
+            self::addRefToIndex(self::REF_PARTICIPATION,$participation,$i,$personRef);
+            $manager->persist($participation);
+
+            $site->addParticipation($participation);
+        }
+    }
+
+
+    public function getDependencies()
+    {
+        return array(
+            PersonFixtures::class,
+        );
     }
 
 }

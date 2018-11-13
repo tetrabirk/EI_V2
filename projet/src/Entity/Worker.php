@@ -20,17 +20,17 @@ class Worker extends User
     /**
      * @ORM\ManyToMany(targetEntity="App\Entity\WorkDay", inversedBy="workers")
      */
-    private $workDay;
+    private $workDays;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\WorkDay", mappedBy="author")
+     * @ORM\OneToMany(targetEntity="App\Entity\WorkDay", mappedBy="author",cascade={"remove"})
      */
     private $redactedWorkDays;
 
     public function __construct()
     {
         $this->completedTasks = new ArrayCollection();
-        $this->workDay = new ArrayCollection();
+        $this->workDays = new ArrayCollection();
         $this->redactedWorkDays = new ArrayCollection();
     }
 
@@ -68,15 +68,15 @@ class Worker extends User
     /**
      * @return Collection|WorkDay[]
      */
-    public function getWorkDay(): Collection
+    public function getWorkDays(): Collection
     {
-        return $this->workDay;
+        return $this->workDays;
     }
 
     public function addWorkDay(WorkDay $workDay): self
     {
-        if (!$this->workDay->contains($workDay)) {
-            $this->workDay[] = $workDay;
+        if (!$this->workDays->contains($workDay)) {
+            $this->workDays[] = $workDay;
         }
 
         return $this;
@@ -84,8 +84,8 @@ class Worker extends User
 
     public function removeWorkDay(WorkDay $workDay): self
     {
-        if ($this->workDay->contains($workDay)) {
-            $this->workDay->removeElement($workDay);
+        if ($this->workDays->contains($workDay)) {
+            $this->workDays->removeElement($workDay);
         }
 
         return $this;

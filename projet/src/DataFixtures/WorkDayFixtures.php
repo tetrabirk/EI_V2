@@ -46,12 +46,13 @@ class WorkDayFixtures extends BaseFixtures implements DependentFixtureInterface
             $workDay->setSite($site);
             $workDay->setDate($this->faker->dateTimeBetween('-3 years', 'now'));
             $workDay->setComment($this->faker->optional(0.2)->text(140));
-
             //TODO photo
 
-            $this->addTasksToWorkers($manager, $workers, $siteRefNbr);
+            $this->addTasksToWorkers($manager, $workDay, $workers, $siteRefNbr);
 
             $this->addRefToIndex(self::REF_WORK_DAY,$workDay,$i);
+            $site->addWorkDay($workDay);
+            $manager->persist($site);
             $manager->persist($workDay);
         }
     }
@@ -74,17 +75,17 @@ class WorkDayFixtures extends BaseFixtures implements DependentFixtureInterface
         return $author;
     }
 
-    public  function addTasksToWorkers(ObjectManager $manager, array $workers, int $siteRefNbr)
+    public  function addTasksToWorkers(ObjectManager $manager, WorkDay $workDay, array $workers, int $siteRefNbr)
     {
         foreach ($workers as $worker){
             /** @var $worker Worker */
 
-            $this->addCompletedTasks($manager, $worker, $siteRefNbr);
+            $this->addCompletedTasks($manager, $workDay,  $worker, $siteRefNbr);
             $manager->persist($worker);
         }
     }
 
-    public function addCompletedTasks(ObjectManager $manager, Worker $worker, int $siteRefNbr)
+    public function addCompletedTasks(ObjectManager $manager, WorkDay $workDay, Worker $worker, int $siteRefNbr)
     {
         $times = $this->randomTime();
 
@@ -100,8 +101,11 @@ class WorkDayFixtures extends BaseFixtures implements DependentFixtureInterface
             $completedTask->setDuration($duration);
 
             $worker->addCompletedTask($completedTask);
-            /**@var $wd WorkDay* */
+            $completedTask->setWorker($worker);
+            $workDay->addWorker($worker);
             $manager->persist($completedTask);
+            $manager->persist($worker);
+            $manager->persist($workDay);
         }
     }
 

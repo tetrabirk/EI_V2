@@ -33,7 +33,7 @@ class Task
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Site", inversedBy="tasks")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(nullable=true, onDelete="SET NULL")
      */
     private $site;
 

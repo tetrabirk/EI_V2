@@ -35,13 +35,13 @@ class WorkDay
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Worker", inversedBy="redactedWorkDays", cascade={"remove"})
-     * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
+     * @ORM\JoinColumn(nullable=true, onDelete="SET NULL")
      */
     private $author;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Site", inversedBy="workDays")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(nullable=true, onDelete="SET NULL")
      */
     private $site;
 

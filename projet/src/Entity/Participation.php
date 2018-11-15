@@ -18,7 +18,7 @@ class Participation
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Person", inversedBy="participations")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(nullable=true, onDelete="SET NULL")
      */
     private $person;
 
@@ -29,7 +29,7 @@ class Participation
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Site", inversedBy="participations")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(nullable=true, onDelete="SET NULL")
      */
     private $site;
 

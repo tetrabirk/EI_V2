@@ -23,13 +23,13 @@ class CompletedTask
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Task")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(nullable=true, onDelete="SET NULL")
      */
     private $task;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Worker", inversedBy="completedTasks")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(nullable=true, onDelete="SET NULL")
      */
     private $worker;
 

@@ -74,8 +74,8 @@ class Site
     private $workDays;
 
     /**
- * @ORM\OneToMany(targetEntity="Participation", mappedBy="site")
- */
+    * @ORM\OneToMany(targetEntity="Participation", mappedBy="site")
+    */
     private $participations;
 
     public function __construct()

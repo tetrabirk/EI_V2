@@ -23,7 +23,7 @@ class Worker extends User
     private $workDays;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\WorkDay", mappedBy="author",cascade={"remove"})
+     * @ORM\OneToMany(targetEntity="App\Entity\WorkDay", mappedBy="author", cascade={"remove"})
      */
     private $redactedWorkDays;
 

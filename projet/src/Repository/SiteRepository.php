@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\Site;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\QueryBuilder;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
 /**
@@ -18,7 +19,29 @@ class SiteRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Site::class);
     }
+    public function testbyShortName($siteShortName)
+    {
 
+        $qb = $this->createQueryBuilder('s');
+        $this->addAllJoins($qb);
+        $qb->andWhere('s.shortName = :ssn');
+        $qb->setParameter('ssn',$siteShortName);
+        $this->returnResult($qb);
+
+    }
+
+    public function returnResult( QueryBuilder $qb)
+    {
+        $query = $qb->getQuery();
+        return $query->getResult();
+
+    }
+
+    public function addAllJoins(QueryBuilder $qb)
+    {
+        $qb->leftJoin('s.workDays','wd')->addSelect('wd');
+        $qb->leftJoin('wd.workers','w')->addSelect('w');
+    }
 //    /**
 //     * @return Site[] Returns an array of Site objects
 //     */

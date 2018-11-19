@@ -5,6 +5,8 @@ namespace App\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use App\Entity\User;
+
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\WorkerRepository")
@@ -19,6 +21,7 @@ class Worker extends User
 
     /**
      * @ORM\ManyToMany(targetEntity="App\Entity\WorkDay", inversedBy="workers")
+     * @ORM\JoinTable(name="workDays")
      */
     private $workDays;
 
@@ -121,4 +124,5 @@ class Worker extends User
 
         return $this;
     }
+
 }

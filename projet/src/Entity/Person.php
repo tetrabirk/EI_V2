@@ -51,7 +51,7 @@ class Person
 
 
     /**
-     * @ORM\OneToMany(targetEntity="Participation", mappedBy="site")
+     * @ORM\OneToMany(targetEntity="Participation", mappedBy="person")
      */
     private $participations;
 
@@ -161,5 +161,9 @@ class Person
         }
 
         return $this;
+    }
+    public function __toString()
+    {
+        return $this->getFirstName().' '.$this->getName();
     }
 }

@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello {{ controller_name }}!{% endblock %}
+{% block title %}TEST{% endblock %}
 
 {% block body %}
 <style>
@@ -9,12 +9,27 @@
 </style>
 
 <div class="example-wrapper">
-    <h1>Hello {{ controller_name }}! ✅</h1>
+    <h1>Hello  ✅</h1>
+    {{ dump(sites) }}
+    {% for site in sites  %}
+        <div>name:{{ site.shortName }} - {{ site.name }}</div>
+        <div>workdays:</div>
+        <ul>
+            {% for workDay in site.workDays %}
+                <li>
+                    <span>{{workDay.date|date("d/m/Y")}}</span>
+                    <ul>
+                        {% for worker in workDay.workers %}
+                            <li>{{ worker }}</li>
+                        {% endfor %}
+                    </ul>
+                </li>
+            {% endfor %}
+        </ul>
 
-    This friendly message is coming from:
-    <ul>
-        <li>Your controller at <code><a href="{{ 'src/Controller/SiteController.php'|file_link(0) }}">src/Controller/SiteController.php</a></code></li>
-        <li>Your template at <code><a href="{{ 'templates/site/index.html.twig'|file_link(0) }}">templates/site/index.html.twig</a></code></li>
-    </ul>
+
+        <hr>
+
+    {% endfor %}
 </div>
 {% endblock %}

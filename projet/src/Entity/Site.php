@@ -21,47 +21,47 @@ class Site
     /**
      * @ORM\Column(type="string", length=5)
      */
-    private $ShortName;
+    private $shortName;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $Name;
+    private $name;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private $Address;
+    private $address;
 
     /**
      * @ORM\Column(type="string", length=10, nullable=true)
      */
-    private $PostCode;
+    private $postCode;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private $Locality;
+    private $locality;
 
     /**
      * @ORM\Column(type="string", length=20, nullable=true)
      */
-    private $Country;
+    private $country;
 
     /**
      * @ORM\Column(type="decimal", precision=10, scale=7, nullable=true)
      */
-    private $Latitude;
+    private $latitude;
 
     /**
      * @ORM\Column(type="decimal", precision=10, scale=7, nullable=true)
      */
-    private $Longitude;
+    private $longitude;
 
     /**
      * @ORM\Column(type="boolean")
      */
-    private $Active;
+    private $active;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Task", mappedBy="site", orphanRemoval=true)
@@ -90,110 +90,110 @@ class Site
         return $this->id;
     }
 
-    public function getShortName(): ?string
+    public function getshortName(): ?string
     {
-        return $this->ShortName;
+        return $this->shortName;
     }
 
-    public function setShortName(string $ShortName): self
+    public function setshortName(string $shortName): self
     {
-        $this->ShortName = $ShortName;
+        $this->shortName = $shortName;
 
         return $this;
     }
 
     public function getName(): ?string
     {
-        return $this->Name;
+        return $this->name;
     }
 
-    public function setName(string $Name): self
+    public function setName(string $name): self
     {
-        $this->Name = $Name;
+        $this->name = $name;
 
         return $this;
     }
 
     public function getAddress(): ?string
     {
-        return $this->Address;
+        return $this->address;
     }
 
-    public function setAddress(?string $Address): self
+    public function setAddress(?string $address): self
     {
-        $this->Address = $Address;
+        $this->address = $address;
 
         return $this;
     }
 
     public function getPostCode(): ?string
     {
-        return $this->PostCode;
+        return $this->postCode;
     }
 
-    public function setPostCode(?string $PostCode): self
+    public function setPostCode(?string $postCode): self
     {
-        $this->PostCode = $PostCode;
+        $this->postCode = $postCode;
 
         return $this;
     }
 
     public function getLocality(): ?string
     {
-        return $this->Locality;
+        return $this->locality;
     }
 
-    public function setLocality(?string $Locality): self
+    public function setLocality(?string $locality): self
     {
-        $this->Locality = $Locality;
+        $this->locality = $locality;
 
         return $this;
     }
 
     public function getCountry(): ?string
     {
-        return $this->Country;
+        return $this->country;
     }
 
-    public function setCountry(?string $Country): self
+    public function setCountry(?string $country): self
     {
-        $this->Country = $Country;
+        $this->locality = $country;
 
         return $this;
     }
 
     public function getLatitude()
     {
-        return $this->Latitude;
+        return $this->latitude;
     }
 
-    public function setLatitude($Latitude): self
+    public function setLatitude($latitude): self
     {
-        $this->Latitude = $Latitude;
+        $this->latitude = $latitude;
 
         return $this;
     }
 
     public function getLongitude()
     {
-        return $this->Longitude;
+        return $this->longitude;
     }
 
-    public function setLongitude($Longitude): self
+    public function setLongitude($longitude): self
     {
-        $this->Longitude = $Longitude;
+        $this->longitude = $longitude;
 
         return $this;
     }
 
     public function getActive(): ?bool
     {
-        return $this->Active;
+        return $this->active;
     }
 
-    public function setActive(bool $Active): self
+    public function setActive(bool $active): self
     {
-        $this->Active = $Active;
+        $this->active = $active;
 
         return $this;
     }

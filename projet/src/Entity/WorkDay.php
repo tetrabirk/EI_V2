@@ -29,7 +29,7 @@ class WorkDay
     private $comment;
 
     /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Worker", mappedBy="workDay")
+     * @ORM\ManyToMany(targetEntity="App\Entity\Worker", mappedBy="workDays")
      */
     private $workers;
 

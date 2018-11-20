@@ -19,55 +19,35 @@ class SiteRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Site::class);
     }
-    public function testbyShortName($siteShortName)
-    {
 
+    public function getSiteList(){
         $qb = $this->createQueryBuilder('s');
-        $this->addAllJoins($qb);
-        $qb->andWhere('s.shortName = :ssn');
-        $qb->setParameter('ssn',$siteShortName);
-        $this->returnResult($qb);
 
+        $qb->leftJoin('s.workDays','wd')->addSelect('wd');
+        $qb->leftJoin('s.participations','pa')->addSelect('pa');
+        $qb->leftJoin('pa.person','pe')->addSelect('pe');
+
+        $query = $qb->getQuery();
+        return $query->getResult();
     }
 
-    public function returnResult( QueryBuilder $qb)
-    {
+
+    public function getOneSite($id){
+        $qb = $this->createQueryBuilder('s');
+        $qb->leftJoin('s.workDays','wd')->addSelect('wd');
+        $qb->leftJoin('wd.author','au')->addSelect('au');
+        $qb->leftJoin('wd.workers','wo')->addSelect('wo');
+        $qb->leftJoin('wo.completedTasks','ct')->addSelect('ct');
+        $qb->leftJoin('ct.task','ta')->addSelect('ta');
+        $qb->leftJoin('s.participations','pa')->addSelect('pa');
+        $qb->leftJoin('pa.person','pe')->addSelect('pe');
+
+        $qb->andWhere('s.id = :id');
+        $qb->setParameter('id',$id);
+
         $query = $qb->getQuery();
         return $query->getResult();
 
     }
 
-    public function addAllJoins(QueryBuilder $qb)
-    {
-        $qb->leftJoin('s.workDays','wd')->addSelect('wd');
-        $qb->leftJoin('wd.workers','w')->addSelect('w');
-    }
-//    /**
-//     * @return Site[] Returns an array of Site objects
-//     */
-    /*
-    public function findByExampleField($value)
-    {
-        return $this->createQueryBuilder('s')
-            ->andWhere('s.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('s.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
-    }
-    */
-
-    /*
-    public function findOneBySomeField($value): ?Site
-    {
-        return $this->createQueryBuilder('s')
-            ->andWhere('s.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
-    }
-    */
 }

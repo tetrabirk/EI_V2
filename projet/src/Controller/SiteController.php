@@ -11,17 +11,34 @@ use Symfony\Component\Routing\Annotation\Route;
 class SiteController extends AbstractController
 {
     /**
-     * @Route("/", name="site")
+     * @Route("/{id}", defaults={"id"=null}, name="site")
+     *
+     * @param $id
+     * @return Response
      */
-    public function index()
+    public function index($id)
     {
-        $sites= $this->getDoctrine()
-            ->getRepository(Site::class)
-            ->testbyShortName('VBH');
+        if ($id !== null) {
+            $site = $this->getRepo()->getOneSite($id);
 
-        return $this->render('site/index.html.twig',array(
-           'sites'=>$sites,
+            return $this->render('site/index.html.twig', array(
+                'site' => $site,
+            ));
+        }
+
+        $sites = $this->getRepo()->getSiteList();
+
+        return $this->render('site/index.html.twig', array(
+            'sites' => $sites,
         ));
 
+
+    }
+
+    public function getRepo()
+    {
+        /** @var SiteRepository $sr */
+        $sr = $this->getDoctrine()->getRepository(Site::class);
+        return $sr;
     }
 }

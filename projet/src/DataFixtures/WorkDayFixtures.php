@@ -3,6 +3,7 @@
 namespace App\DataFixtures;
 
 use App\Entity\CompletedTask;
+use App\Entity\Flag;
 use App\Entity\Site;
 use App\Entity\Task;
 use App\Entity\WorkDay;
@@ -89,7 +90,7 @@ class WorkDayFixtures extends BaseFixtures implements DependentFixtureInterface
     {
         $times = $this->randomTime();
 
-        for ($k = 0; $k < count($times); $k++) {
+        foreach ($times as $time) {
             $completedTask = new CompletedTask();
             $taskRefs= self::$referencesIndex[self::REF_TASK][$siteRefNbr];
             /** @var $task Task* */
@@ -97,7 +98,7 @@ class WorkDayFixtures extends BaseFixtures implements DependentFixtureInterface
             $completedTask->setTask($task);
 
             $duration = new \DateTime();
-            $duration->setTime(0, $times[$k], 0);
+            $duration->setTime(0, $time, 0);
             $completedTask->setDuration($duration);
 
             $worker->addCompletedTask($completedTask);
@@ -109,6 +110,18 @@ class WorkDayFixtures extends BaseFixtures implements DependentFixtureInterface
         }
     }
 
+    public function addFlag(ObjectManager $manager, WorkDay $workDay)
+    {
+        $rand =rand(1,3);
+        for ($i=0; $i<$rand; $i++)
+        {
+            $flag = new Flag;
+            $flag->setComment($this->faker->text($maxNbChars = 255));
+            $flag->setWorkDay($workDay);
+            $workDay->addFlag($flag);
+            $manager->persist($flag);
+        }
+    }
 
 
     public function randomTime()

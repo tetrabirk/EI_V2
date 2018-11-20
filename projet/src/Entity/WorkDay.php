@@ -45,9 +45,27 @@ class WorkDay
      */
     private $site;
 
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $validated;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Flag", mappedBy="workDay", orphanRemoval=true)
+     */
+    private $flags;
+
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $flagged;
+
     public function __construct()
     {
         $this->workers = new ArrayCollection();
+        $this->flags = new ArrayCollection();
+        $this->setValidated(0);
+        $this->setFlagged(0);
     }
 
 
@@ -127,6 +145,61 @@ class WorkDay
     public function setSite(?Site $site): self
     {
         $this->site = $site;
+
+        return $this;
+    }
+
+    public function getValidated(): ?bool
+    {
+        return $this->validated;
+    }
+
+    public function setValidated(bool $validated): self
+    {
+        $this->validated = $validated;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Flag[]
+     */
+    public function getFlags(): Collection
+    {
+        return $this->flags;
+    }
+
+    public function addFlag(Flag $flag): self
+    {
+        if (!$this->flags->contains($flag)) {
+            $this->flags[] = $flag;
+            $flag->setWorkDay($this);
+        }
+
+        return $this;
+    }
+
+    public function removeFlag(Flag $flag): self
+    {
+        if ($this->flags->contains($flag)) {
+            $this->flags->removeElement($flag);
+            // set the owning side to null (unless already changed)
+            if ($flag->getWorkDay() === $this) {
+                $flag->setWorkDay(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getFlagged(): ?bool
+    {
+        return $this->flagged;
+    }
+
+    public function setFlagged(bool $flagged): self
+    {
+        $this->flagged = $flagged;
 
         return $this;
     }

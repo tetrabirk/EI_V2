@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
  */
-class User extends Person
+abstract class User extends Person
 {
      /**
      * @ORM\Column(type="string", length=255)

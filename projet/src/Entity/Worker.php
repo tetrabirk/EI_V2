@@ -35,6 +35,7 @@ class Worker extends User
         $this->completedTasks = new ArrayCollection();
         $this->workDays = new ArrayCollection();
         $this->redactedWorkDays = new ArrayCollection();
+        $this->setActive(1);
     }
 
      /**

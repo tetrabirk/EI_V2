@@ -3,7 +3,9 @@
 namespace App\Controller;
 
 use App\Entity\Site;
+use App\Entity\WorkDay;
 use App\Repository\SiteRepository;
+use App\Repository\WorkDayRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -19,17 +21,17 @@ class SiteController extends AbstractController
     public function index($id)
     {
         if ($id !== null) {
-            $site = $this->getRepo()->getOneSite($id);
+            $test = $this->getRepo()->getOneWorkDay($id);
 
             return $this->render('site/index.html.twig', array(
-                'site' => $site,
+                'test' => $test,
             ));
         }
 
-        $sites = $this->getRepo()->getSiteList();
+        $test = $this->getRepo()->getWorkdayList();
 
         return $this->render('site/index.html.twig', array(
-            'sites' => $sites,
+            'test' => $test,
         ));
 
 
@@ -37,8 +39,12 @@ class SiteController extends AbstractController
 
     public function getRepo()
     {
-        /** @var SiteRepository $sr */
-        $sr = $this->getDoctrine()->getRepository(Site::class);
+//        /** @var SiteRepository $sr */
+//        $sr = $this->getDoctrine()->getRepository(Site::class);
+//        return $sr;
+
+        /** @var WorkDayRepository $sr */
+        $sr = $this->getDoctrine()->getRepository(WorkDay::class);
         return $sr;
     }
 }

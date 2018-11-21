@@ -18,33 +18,35 @@ class WorkDayRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, WorkDay::class);
     }
+    public function getWorkdayList(){
+        $qb = $this->createQueryBuilder('wd');
 
-//    /**
-//     * @return WorkDay[] Returns an array of WorkDay objects
-//     */
-    /*
-    public function findByExampleField($value)
-    {
-        return $this->createQueryBuilder('w')
-            ->andWhere('w.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('w.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
-    }
-    */
+        $qb->leftJoin('wd.author','au')->addSelect('au');
+        $qb->leftJoin('wd.workers','wo')->addSelect('wo');
+        $qb->leftJoin('wo.completedTasks','ct')->addSelect('ct');
+        $qb->leftJoin('ct.task','t')->addSelect('t');
 
-    /*
-    public function findOneBySomeField($value): ?WorkDay
-    {
-        return $this->createQueryBuilder('w')
-            ->andWhere('w.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
+
+        $query = $qb->getQuery();
+        return $query->getResult();
     }
-    */
+
+    public function getOneWorkDay($id){
+        $qb = $this->createQueryBuilder('wd');
+        $qb->leftJoin('wd.site','s')->addSelect('s');
+        $qb->leftJoin('wd.author','au')->addSelect('au');
+        $qb->leftJoin('wd.workers','wo')->addSelect('wo');
+        $qb->leftJoin('wo.completedTasks','ct')->addSelect('ct');
+        $qb->leftJoin('ct.task','ta')->addSelect('ta');
+        $qb->leftJoin('s.participations','pa')->addSelect('pa');
+        $qb->leftJoin('pa.person','pe')->addSelect('pe');
+
+        $qb->andWhere('wd.id = :id');
+        $qb->setParameter('id',$id);
+
+        $query = $qb->getQuery();
+        return $query->getResult();
+
+    }
+
 }

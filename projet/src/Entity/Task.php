@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -36,6 +38,48 @@ class Task
      * @ORM\JoinColumn(nullable=true, onDelete="SET NULL")
      */
     private $site;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\CompletedTask", mappedBy="task")
+     */
+    private $completedTasks;
+
+    public function __construct()
+    {
+        $this->completedTasks = new ArrayCollection();
+    }
+
+    /**
+     * @return Collection|CompletedTask[]
+     */
+    public function getCompletedTasks(): Collection
+    {
+        return $this->completedTasks;
+    }
+
+    public function addCompletedTask(CompletedTask $completedTask): self
+    {
+        if (!$this->completedTasks->contains($completedTask)) {
+            $this->completedTasks[] = $completedTask;
+            $completedTask->setTask($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCompletedTask(CompletedTask $completedTask): self
+    {
+        if ($this->completedTasks->contains($completedTask)) {
+            $this->completedTasks->removeElement($completedTask);
+            // set the owning side to null (unless already changed)
+            if ($completedTask->getTask() === $this) {
+                $completedTask->setTask(null);
+            }
+        }
+
+        return $this;
+    }
+
 
     public function getId(): ?int
     {

@@ -22,7 +22,7 @@ class CompletedTask
     private $duration;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Task")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Task", inversedBy="completedTasks")
      * @ORM\JoinColumn(nullable=true, onDelete="SET NULL")
      */
     private $task;

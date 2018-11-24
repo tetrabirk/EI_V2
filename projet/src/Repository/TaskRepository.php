@@ -18,33 +18,27 @@ class TaskRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Task::class);
     }
-
-//    /**
-//     * @return Task[] Returns an array of Task objects
-//     */
-    /*
-    public function findByExampleField($value)
+    public function getTaskList()
     {
-        return $this->createQueryBuilder('t')
-            ->andWhere('t.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('t.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
-    }
-    */
+        $qb = $this->createQueryBuilder('t');
 
-    /*
-    public function findOneBySomeField($value): ?Task
-    {
-        return $this->createQueryBuilder('t')
-            ->andWhere('t.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
+        $qb->leftJoin('t.completedTasks','ct')->addSelect('ct');
+        $query = $qb->getQuery();
+        return $query->getResult();
     }
-    */
+
+    public function getOneTask($id)
+    {
+        $qb = $this->createQueryBuilder('t');
+
+        $qb->leftJoin('t.completedTasks','ct')->addSelect('ct');
+        $qb->leftJoin('ct.worker','wo')->addSelect('wo');
+
+        $qb->andWhere('t.id = :id');
+        $qb->setParameter('id',$id);
+
+        $query = $qb->getQuery();
+        return $query->getResult();
+
+    }
 }

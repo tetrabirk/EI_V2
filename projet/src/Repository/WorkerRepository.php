@@ -19,32 +19,14 @@ class WorkerRepository extends ServiceEntityRepository
         parent::__construct($registry, Worker::class);
     }
 
-//    /**
-//     * @return Worker[] Returns an array of Worker objects
-//     */
-    /*
-    public function findByExampleField($value)
-    {
-        return $this->createQueryBuilder('w')
-            ->andWhere('w.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('w.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
-    }
-    */
+    public function getOneWorker()
+{
+    $qb = $this->createQueryBuilder('w');
 
-    /*
-    public function findOneBySomeField($value): ?Worker
-    {
-        return $this->createQueryBuilder('w')
-            ->andWhere('w.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
-    }
-    */
+    $qb->leftJoin('w.participations','pa')->addSelect('pa');
+    $qb->leftJoin('w.site','si')->addSelect('si');
+    $qb->leftJoin('w.completedTask','ct')->addSelect('ct');
+    $qb->leftJoin('ct.task','ta')->addSelect('ta');
+
+}
 }

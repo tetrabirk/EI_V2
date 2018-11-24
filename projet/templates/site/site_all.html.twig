@@ -1,0 +1,60 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}TEST{% endblock %}
+
+{% block body %}
+<style>
+    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
+    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
+</style>
+
+<div class="example-wrapper">
+    <h1>SITES  ✅</h1>
+    <h2>Map</h2>
+    <div>
+        {% for site in sites %}
+        <span><strong>{{ site.shortName }} : </strong>{{ site.latitude }} - {{ site.longitude }}</span>
+        {% endfor %}
+    </div>
+    <hr>
+    <h2>Site List</h2>
+    {% for site in sites  %}
+        <h3>name:{{ site.shortName }} - {{ site.name }}</h3>
+        <div>{{ site.address }} - {{ site.postCode }} {{ site.locality }} - {{ site.country }}</div>
+        <div>is Active: {{ site.active ? '✅':'❌' }}</div>
+        <div> last work day : /!\ASK HOW TO/!\</div>
+        <h4>participants</h4>
+        <ul>
+            {% for participant in site.participations %}
+                <li>
+                    <span>{{ participant.person }} : {{ participant.role }}</span>
+                </li>
+            {% endfor %}
+        </ul>
+
+        <h4>workdays:</h4>
+        <ul>
+            {% for workDay in site.workDays %}
+                <li>
+                    <span>{{workDay.date|date("d/m/Y")}}</span>
+
+                </li>
+            {% endfor %}
+        </ul>
+        <h4>flags ?</h4>
+            <ul>
+                {% for wd in site.workDays if wd.flagged %}
+                    {% for flag in wd.flags if (flag.viewed == false) %}
+                        <li>{{ flag.comment }}</li>
+
+                    {% endfor %}
+                {% endfor %}
+            </ul>
+
+        <hr>
+
+    {% endfor %}
+    {{ dump(sites) }}
+
+    </div>
+{% endblock %}

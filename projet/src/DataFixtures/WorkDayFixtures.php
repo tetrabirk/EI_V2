@@ -48,6 +48,7 @@ class WorkDayFixtures extends BaseFixtures implements DependentFixtureInterface
             $workDay->setDate($this->faker->dateTimeBetween('-3 years', 'now'));
             $workDay->setComment($this->faker->optional(0.2)->text(140));
             //TODO photo
+            $this->addFlag($manager,$workDay);
 
             $this->addTasksToWorkers($manager, $workDay, $workers, $siteRefNbr);
 
@@ -100,7 +101,7 @@ class WorkDayFixtures extends BaseFixtures implements DependentFixtureInterface
             $duration = new \DateTime();
             $duration->setTime(0, $time, 0);
             $completedTask->setDuration($duration);
-
+            $task->addCompletedTask($completedTask);
             $worker->addCompletedTask($completedTask);
             $completedTask->setWorker($worker);
             $workDay->addWorker($worker);
@@ -112,13 +113,18 @@ class WorkDayFixtures extends BaseFixtures implements DependentFixtureInterface
 
     public function addFlag(ObjectManager $manager, WorkDay $workDay)
     {
-        $rand =rand(1,3);
+        $array=[0,0,0,0,0,1,1,2,2,3];
+        $key =array_rand($array);
+        $rand =$array[$key];
+
         for ($i=0; $i<$rand; $i++)
         {
             $flag = new Flag;
             $flag->setComment($this->faker->text($maxNbChars = 255));
             $flag->setWorkDay($workDay);
+            $flag->setViewed(random_int(0,1));
             $workDay->addFlag($flag);
+            $workDay->setFlagged(1);
             $manager->persist($flag);
         }
     }

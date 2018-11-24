@@ -13,7 +13,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class SiteController extends AbstractController
 {
     /**
-     * @Route("/{id}", defaults={"id"=null}, name="site")
+     * @Route("/site/{id}", defaults={"id"=null}, name="site")
      *
      * @param $id
      * @return Response
@@ -21,17 +21,17 @@ class SiteController extends AbstractController
     public function index($id)
     {
         if ($id !== null) {
-            $test = $this->getRepo()->getOneWorkDay($id);
+            $site = $this->getRepo()->getOneSite($id);
 
-            return $this->render('site/index.html.twig', array(
-                'test' => $test,
+            return $this->render('site/site_detail.html.twig', array(
+                'site' => $site,
             ));
         }
 
-        $test = $this->getRepo()->getWorkdayList();
+        $sites = $this->getRepo()->getSiteList();
 
-        return $this->render('site/index.html.twig', array(
-            'test' => $test,
+        return $this->render('site/site_all.html.twig', array(
+            'sites' => $sites,
         ));
 
 
@@ -39,12 +39,9 @@ class SiteController extends AbstractController
 
     public function getRepo()
     {
-//        /** @var SiteRepository $sr */
-//        $sr = $this->getDoctrine()->getRepository(Site::class);
-//        return $sr;
-
-        /** @var WorkDayRepository $sr */
-        $sr = $this->getDoctrine()->getRepository(WorkDay::class);
+        /** @var SiteRepository $sr */
+        $sr = $this->getDoctrine()->getRepository(Site::class);
         return $sr;
+
     }
 }

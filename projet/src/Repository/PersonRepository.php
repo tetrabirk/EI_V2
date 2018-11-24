@@ -19,32 +19,28 @@ class PersonRepository extends ServiceEntityRepository
         parent::__construct($registry, Person::class);
     }
 
-//    /**
-//     * @return Person[] Returns an array of Person objects
-//     */
-    /*
-    public function findByExampleField($value)
+    public function getPersonList()
     {
-        return $this->createQueryBuilder('p')
-            ->andWhere('p.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('p.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
-    }
-    */
+        $qb = $this->createQueryBuilder('p');
 
-    /*
-    public function findOneBySomeField($value): ?Person
-    {
-        return $this->createQueryBuilder('p')
-            ->andWhere('p.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
+        $qb->leftJoin('p.participations','pa')->addSelect('pa');
+
+        $query = $qb->getQuery();
+        return $query->getResult();
     }
-    */
+
+    public function getOnePerson($id)
+    {
+        $qb = $this->createQueryBuilder('p');
+
+        $qb->leftJoin('p.participations','pa')->addSelect('pa');
+        $qb->leftJoin('pa.site','si')->addSelect('si');
+
+
+        $qb->andWhere('p.id = :id');
+        $qb->setParameter('id',$id);
+
+        $query = $qb->getQuery();
+        return $query->getResult();
+    }
 }

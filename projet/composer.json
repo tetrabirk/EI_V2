@@ -12,7 +12,7 @@
         "symfony/debug": "*",
         "symfony/expression-language": "*",
         "symfony/flex": "^1.1",
-        "symfony/form": "*",
+        "symfony/form": "4.1.*",
         "symfony/framework-bundle": "*",
         "symfony/monolog-bundle": "^3.1",
         "symfony/orm-pack": "^1.0",

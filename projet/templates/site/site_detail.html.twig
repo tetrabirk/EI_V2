@@ -10,30 +10,6 @@
 
 <div class="example-wrapper">
     <h1>Hello  ✅</h1>
-    {{ dump(test) }}
-    {#{% for site in sites  %}#}
-        {#<div>name:{{ site.shortName }} - {{ site.name }}</div>#}
-        {#<div>participants</div>#}
-        {#<ul>#}
-            {#{% for participant in site.participations %}#}
-                {#<li>#}
-                    {#<span>{{ participant.person }} : {{ participant.role }}</span>#}
-                {#</li>#}
-            {#{% endfor %}#}
-        {#</ul>#}
-        {#<div>workdays:</div>#}
-        {#<ul>#}
-            {#{% for workDay in site.workDays %}#}
-                {#<li>#}
-                    {#<span>{{workDay.date|date("d/m/Y")}}</span>#}
 
-                {#</li>#}
-            {#{% endfor %}#}
-        {#</ul>#}
-
-
-        {#<hr>#}
-
-    {#{% endfor %}#}
 </div>
 {% endblock %}

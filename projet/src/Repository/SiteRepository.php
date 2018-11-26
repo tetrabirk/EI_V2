@@ -24,35 +24,60 @@ class SiteRepository extends ServiceEntityRepository
     {
         $qb = $this->createQueryBuilder('s');
 
-        $qb->leftJoin('s.workDays','wd')->addSelect('wd');
-        $qb->leftJoin('wd.flags','fl')->addSelect('fl');
-        $qb->leftJoin('s.participations','pa')->addSelect('pa');
-        $qb->leftJoin('pa.person','pe')->addSelect('pe');
+        $this->addBasicJoins($qb);
 
         $query = $qb->getQuery();
         return $query->getResult();
     }
 
-
+    /**
+     * @param $id
+     * @return mixed
+     */
     public function getOneSite($id)
     {
         $qb = $this->createQueryBuilder('s');
-        $qb->leftJoin('s.workDays','wd')->addSelect('wd');
-        $qb->leftJoin('wd.author','au')->addSelect('au');
-        $qb->leftJoin('wd.workers','wo')->addSelect('wo');
-        $qb->leftJoin('wd.flags','fl')->addSelect('fl');
-        $qb->leftJoin('wo.completedTasks','ct')->addSelect('ct');
-        $qb->leftJoin('ct.task','ta')->addSelect('ta');
-        $qb->leftJoin('s.participations','pa')->addSelect('pa');
-        $qb->leftJoin('pa.person','pe')->addSelect('pe');
+        $this->addBasicJoins($qb);
+        $qb->leftJoin('wd.workers', 'wo')->addSelect('wo');
+        $qb->leftJoin('wo.completedTasks', 'ct')->addSelect('ct');
+        $qb->leftJoin('ct.task', 'ta')->addSelect('ta');
 
         $qb->andWhere('s.id = :id');
-        $qb->setParameter('id',$id);
-
+        $qb->setParameter('id', $id);
 
         $query = $qb->getQuery();
         return $query->getResult();
 
     }
 
+    public function searchSites($searchString)
+    {
+        $string = '%' . $searchString . '%';
+        dump($string);
+
+        $qb = $this->createQueryBuilder('s');
+        $this->addBasicJoins($qb);
+
+        $qb->where('s.name LIKE :string');
+        $qb->orWhere('s.shortName LIKE :string');
+        $qb->orWhere('s.locality LIKE :string');
+        $qb->setParameter('string', $string);
+
+
+        $query = $qb->getQuery();
+        return $query->getResult();
+    }
+
+    /**
+     * @param QueryBuilder $qb
+     */
+    public function addBasicJoins(QueryBuilder $qb): void
+    {
+        $qb->leftJoin('s.workDays', 'wd')->addSelect('wd');
+        $qb->leftJoin('wd.author', 'au')->addSelect('au');
+        $qb->leftJoin('wd.flags', 'fl')->addSelect('fl');
+        $qb->leftJoin('s.participations', 'pa')->addSelect('pa');
+        $qb->leftJoin('pa.person', 'pe')->addSelect('pe');
+
+    }
 }

@@ -70,6 +70,7 @@ class Site
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\WorkDay", mappedBy="site")
+     * @ORM\OrderBy({"date" = "DESC"})
      */
     private $workDays;
 

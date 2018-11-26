@@ -4,9 +4,11 @@ namespace App\Controller;
 
 use App\Entity\Site;
 use App\Entity\WorkDay;
+use App\Form\SearchType;
 use App\Repository\SiteRepository;
 use App\Repository\WorkDayRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -30,11 +32,32 @@ class SiteController extends AbstractController
 
         $sites = $this->getRepo()->getSiteList();
 
+        $form = $this->createForm(SearchType::class);
         return $this->render('site/site_all.html.twig', array(
             'sites' => $sites,
+            'form' => $form->createView(),
         ));
 
 
+    }
+
+    /**
+     * @Route("/s/",name="search")
+     * @param Request
+     * @return Response
+     */
+    public function search(Request $request):Response{
+        dump($request);
+
+        $searchString = $request->query->get('search')['string'];
+        dump($searchString);
+
+        $sites= $this->getRepo()->searchSites($searchString);
+        $form = $this->createForm(SearchType::class);
+        return $this->render('site/site_all.html.twig', array(
+            'sites' => $sites,
+            'form' => $form->createView(),
+        ));
     }
 
     public function getRepo()

@@ -7,7 +7,33 @@
     .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
     .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
 </style>
-
+<nav>
+/!\ASK HOW TO MAKE MENU/!\
+    {#<ul>#}
+        {#<li>#}
+            {#<a href="{% path('home') %}">HOME</a>#}
+        {#</li>#}
+        {#<li>#}
+            {#<a href="{% path('site') %}">CHANTIER</a>#}
+        {#</li>#}
+        {#<li>#}
+            {#<a href="{% path('history') %}">HISTORIQUE</a>#}
+        {#</li>#}
+        {#<li>#}
+            {#<a href="{% path('person') %}">PERSONNES</a>#}
+        {#</li>#}
+        {#<li>#}
+            {#<a href="{% path('param') %}">PARAMETRES</a>#}
+        {#</li>#}
+        {#<li>#}
+            {#<a href="{% path('notifications') %}">NOTIFICATIONS</a>#}
+        {#</li>#}
+        {#<div>SEARCHBAR</div>#}
+    {#</ul>#}
+    {{ form_start(form) }}
+        {{ form_rest(form) }}
+    {{ form_end(form) }}
+</nav>
 <div class="example-wrapper">
     <h1>SITES  ✅</h1>
     <h2>Map</h2>

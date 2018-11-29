@@ -13,31 +13,28 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 class SearchType extends AbstractType
 {
 
-    private $router;
     public function __construct(UrlGeneratorInterface $router)
     {
-        $this->router = $router;
     }
 
-    public function buildForm(FormBuilderInterface $builder, array $options):void
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-        ->setMethod('GET')
-            ->setAction($this->router->generate('search',array(),UrlGeneratorInterface::ABSOLUTE_URL))
-        ->add('string',TextType::class,array(
-          'required' =>false,
-          'empty_data' => null,
-        ))
-            ->add('search',SubmitType::class,array(
-                'attr'=>array('class'=>'search'),
+            ->add('string', TextType::class, array(
+                'required' => false,
+                'empty_data' => null,
+
             ))
-        ;
+            ->add('search', SubmitType::class, array(
+                'attr' => array('class' => 'search'),
+            ));
+
     }
 
-    public function configureOptions(OptionsResolver $resolver):void
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            'data_class' => Site::class,
+            'data_class' => null,
         ]);
     }
 }

@@ -48,19 +48,20 @@ class SiteController extends AbstractController
      */
     public function search(Request $request):Response{
         dump($request);
-
         $searchString = $request->query->get('search')['string'];
-        dump($searchString);
 
         $sites= $this->getRepo()->searchSites($searchString);
-        $form = $this->createForm(SearchType::class);
+        $form = $this->createForm(SearchType::class,array(
+            'action' => $this->generateUrl('search'),
+            'method' => 'GET',
+        ));
         return $this->render('site/site_all.html.twig', array(
             'sites' => $sites,
             'form' => $form->createView(),
         ));
     }
 
-    public function getRepo()
+    public function getRepo():SiteRepository
     {
         /** @var SiteRepository $sr */
         $sr = $this->getDoctrine()->getRepository(Site::class);

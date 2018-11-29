@@ -53,7 +53,6 @@ class SiteRepository extends ServiceEntityRepository
     public function searchSites($searchString)
     {
         $string = '%' . $searchString . '%';
-        dump($string);
 
         $qb = $this->createQueryBuilder('s');
         $this->addBasicJoins($qb);
@@ -62,6 +61,7 @@ class SiteRepository extends ServiceEntityRepository
         $qb->orWhere('s.shortName LIKE :string');
         $qb->orWhere('s.locality LIKE :string');
         $qb->setParameter('string', $string);
+        $qb->groupBy('s.id');
 
 
         $query = $qb->getQuery();

@@ -1,0 +1,5 @@
+<h3>{% trans %}Accès rapides{% endtrans %}</h3>
+<ul>
+    {% for link in quickaccess %}
+    <li><a class="btn btn-primary" href="{{ link.route }}">{{ link.name }}</a></li>
+</ul>

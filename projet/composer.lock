@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "8fd751b0def5fb475c44b528e76c7c11",
+    "content-hash": "9e1499718583bb2a961a8d7ee0dc6a32",
     "packages": [
         {
             "name": "cocur/slugify",
@@ -4248,7 +4248,7 @@
         },
         {
             "name": "symfony/translation",
-            "version": "v4.1.8",
+            "version": "v4.1.9",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/translation.git",

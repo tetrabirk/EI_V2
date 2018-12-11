@@ -1,14 +1,68 @@
 <!DOCTYPE html>
-<html>
-    <head>
-        <meta charset="UTF-8">
-        <title>{% block title %}Welcome!{% endblock %}</title>
-        {% block stylesheets %}{% endblock %}
-    </head>
-    <body>
-        {% block body %}
 
-        {% endblock %}
-        {% block javascripts %}{% endblock %}
-    </body>
+<html {% block html_attr %}lang="fr"{% endblock %}>
+<head>
+    <meta charset="UTF-8">
+
+    {% include 'lib/css.html.twig' %}
+
+    <title>{% block title %}WD LOG - {{ company_name }}{% endblock %}</title>
+
+</head>
+<body id="body" class="lang_{{ language }} {% block body_classes %}  {% endblock %}" >
+{% block body %}
+
+
+<header id="header">
+    <div class="container">
+        <div id="logo">
+            <a href="/">
+                <img src="img/logo.svg" alt="logo" />
+            </a>
+            <span>WD LOG - {{ company_name }}</span>
+        </div>
+        <div id="navigation-toggle"><span></span></div>
+        <div id="navigation">
+            {% include 'lib/menu.html.twig' %}
+        </div>
+    </div>
+</header>
+
+<div class="main-container container">
+    <div class="main">
+        <div class="row">
+            <aside id="aside-left" class="col-sm-12 col-md-3">
+                {% block aside_left %}
+
+                {% endblock %}
+            </aside>
+            <div id="content" class="col-sm-12 col-md-9 col-lg-6">
+                {% block content %}
+
+                {% endblock %}
+            </div>
+            <aside id="aside-right" class="col-lg-3">
+                {% block aside_right %}
+
+                {% endblock %}
+
+            </aside>
+
+        </div>
+    </div>
+
+</div>
+
+</div>
+<footer id="footer">
+    {% include 'lib/footer.html.twig' %}
+</footer>
+
+
+    {% include 'lib/js.html.twig' %}
+
+
+
+{% endblock %}
+</body>
 </html>

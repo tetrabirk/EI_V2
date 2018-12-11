@@ -1,0 +1,35 @@
+{% extends "base.html.twig" %}
+
+{% block body_classes %}
+    page_hom
+{% endblock %}
+
+{% block aside_left %}
+
+{% endblock %}
+
+{% block content %}
+    <section>
+        <h1>
+            {% trans %}Bienvenue %app.user% {% endtrans %}
+        </h1>
+        <div class="notifications">
+            <h3>
+            {% transchoice count %}
+                {0} Vous n'avez pas de notification|{1} Vous avez une notifications|]1,Inf[ Vous avez %count% notifications
+            {% endtranschoice %}
+            </h3>
+
+            <ul>
+                {% for notif in notifications %}
+                <li>{{ notif }}</li>
+                {% endfor %}
+            </ul>
+            <a class="btn btn-primary" href="notifications">{% trans %}Toutes les notifications{% endtrans %}</a>
+        </div>
+    </section>
+{% endblock %}
+
+{% block aside_right %}
+    {% include 'lib/quick_access.html.twig' %}
+{% endblock %}

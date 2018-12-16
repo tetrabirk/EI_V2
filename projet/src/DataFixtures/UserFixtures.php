@@ -8,9 +8,16 @@ use Cocur\Slugify\Slugify;
 use Doctrine\Common\Persistence\ObjectManager;
 use Faker\Factory;
 use Faker\Generator;
+use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 class UserFixtures extends BaseFixtures
 {
+    private $passwordEncoder;
+
+    public function __construct(UserPasswordEncoderInterface $passwordEncoder)
+    {
+        $this->passwordEncoder = $passwordEncoder;
+    }
 
     public function loadData(ObjectManager $manager)
     {
@@ -49,7 +56,9 @@ class UserFixtures extends BaseFixtures
                 $admin = $user;
                 $admin->setActive(true);
                 $admin->setEmail('admin@admin.com');
-                $admin->setPassword('password'); //TODO encrypt passwords
+                $admin->setPassword($this->passwordEncoder->encodePassword(
+                    $admin,'password'
+                ));
 
                 $this->addRefToIndex(self::REF_ADMIN,$admin,$i);
                 $manager->persist($admin);
@@ -57,9 +66,14 @@ class UserFixtures extends BaseFixtures
             } else {
                 $worker = $user;
                 $worker->setActive(true);
-                $worker->setEmail($email);
-                $worker->setPassword('password'); //TODO encrypt passwords
-
+                if($i === 1){
+                    $worker->setEmail('test@test.com');
+                }else{
+                    $worker->setEmail($email);
+                }
+                $worker->setPassword($this->passwordEncoder->encodePassword(
+                    $worker,'password'
+                ));
                 if ($i <= (self::AMOUNT_OF_AUTHORS+1)) {
                     $worker->setActive(true);
                     $this->addRefToIndex(self::REF_AUTHOR,$worker,$i-1);

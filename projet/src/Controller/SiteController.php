@@ -20,7 +20,7 @@ class SiteController extends AbstractController
      * @param $id
      * @return Response
      */
-    public function index($id)
+    public function index($id):Response
     {
         if ($id !== null) {
             $site = $this->getRepo()->getOneSite($id);

@@ -1,14 +1,14 @@
 <nav id="nav">
     <ul class="navigation-left">
-        <li><a title="Historique" href="/Historique/">Historique</a></li>
-        <li><a title="Chantier" href="/Chantier/">Chantier</a></li>
-        <li><a title="Personnes" href="/Personnes/">Personnes</a></li>
-        <li><a title="Matériaux" href="/Matériaux/">Matériaux</a></li>
+        <li><a href="/Historique/">{% trans %}Historique{% endtrans %}</a></li>
+        <li><a href="{{ path('site') }}">{% trans %}Chantier{% endtrans %}</a></li>
+        <li><a href="/Personnes/">{% trans %}Personnes{% endtrans %}</a></li>
+        <li><a href="/Matériaux/">{% trans %}Matériaux{% endtrans %}</a></li>
     </ul>
     <ul class="navigation-right">
-        <li><a class ="new-entry" title="new-entry" href="/new-entry/">N</a></li>
-        <li><a title="notification" href="/notification/">n</a></li>
-        <li><a title="param" href="/param/">p</a></li>
+        <li><a class ="new-entry" href="/new-entry/">N</a></li>
+        <li><a href="/notification/">n</a></li>
+        <li><a href="/param/">p</a></li>
 
     </ul>
 </nav>

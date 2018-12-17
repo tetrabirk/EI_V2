@@ -1,3 +1,7 @@
+{%  if app.user %}
+    {% set username = app.user.firstname %}
+{% endif %}
+
 <!DOCTYPE html>
 
 <html {% block html_attr %}lang="fr"{% endblock %}>

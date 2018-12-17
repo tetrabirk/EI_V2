@@ -494,7 +494,21 @@ html body {
   }
 }
 
+#login-menu{
+  position:absolute;
+  top:5px;
+  right: 5px;
+  font-size: @font-size-small;
+  @media @sizeLG, @sizeXL {
+    right: 0;
 
+
+  }
+
+  .login-btn{
+    font-weight: @font-weight-bold;
+  }
+}
 
 /*========================================*/
 /*============== NAVIGATION ==============*/
@@ -646,7 +660,9 @@ html body {
 /*========================================*/
 #nav ul {
   .list-unstyled;
-
+  &.navigation-left{
+    padding-top: 25px;
+  }
 
   li {
     &:not(:first-child) {
@@ -686,6 +702,7 @@ html body {
 
 
       &.navigation-left{
+        padding-top: 0;
         flex-direction: row;
         a{
           min-width: 150px;
@@ -909,6 +926,14 @@ html body {
   padding-bottom: 90px;
 
 
+}
+
+/*========================================*/
+/*=============== FORMS ==================*/
+/*========================================*/
+
+input{
+  margin-bottom: 15px;
 }
 /*========================================*/
 /*============ NOTIFICATIONS =============*/

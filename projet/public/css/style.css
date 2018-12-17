@@ -526,6 +526,20 @@ html body {
     padding-right: 0;
   }
 }
+#login-menu {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  font-size: 12px;
+}
+@media only screen and (min-width: 992px) and (max-width: 1200px), only screen and (min-width: 1200px) {
+  #login-menu {
+    right: 0;
+  }
+}
+#login-menu .login-btn {
+  font-weight: 700;
+}
 /*========================================*/
 /*============== NAVIGATION ==============*/
 /*========================================*/
@@ -678,6 +692,9 @@ html body {
   padding: 0;
   list-style: none;
 }
+#nav ul.navigation-left {
+  padding-top: 25px;
+}
 #nav ul li:not(:first-child) {
   border-top: 1px solid rgba(33, 108, 100, 0.1);
 }
@@ -710,6 +727,7 @@ html body {
     display: flex;
   }
   #nav ul.navigation-left {
+    padding-top: 0;
     flex-direction: row;
   }
   #nav ul.navigation-left a {
@@ -924,6 +942,12 @@ html body {
 .main {
   padding-top: calc(90px + 30px);
   padding-bottom: 90px;
+}
+/*========================================*/
+/*=============== FORMS ==================*/
+/*========================================*/
+input {
+  margin-bottom: 15px;
 }
 /*========================================*/
 /*============ NOTIFICATIONS =============*/

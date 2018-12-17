@@ -11,15 +11,14 @@
 {% block content %}
     <section>
         <h2>
-            {% set username = app.user.firstname %}
-            {% trans %}Bienvenue %username% {% endtrans %}
+            {% trans %}Bienvenue %username%{% endtrans %}
         </h2>
         <div class="notifications">
             <h3>
                 {% set count = notifications|length %}
-            {% transchoice count %}
-                {0} Vous n'avez pas de notification|{1} Vous avez une notifications|]1,Inf[ Vous avez %count% notifications
-            {% endtranschoice %}
+                {% transchoice count %}
+                    {0} Vous n'avez pas de notification|{1} Vous avez une notifications|]1,Inf[ Vous avez %count% notifications
+                {% endtranschoice %}
             </h3>
 
             <ul>

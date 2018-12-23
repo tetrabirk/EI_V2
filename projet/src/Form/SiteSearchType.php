@@ -35,19 +35,19 @@ class SiteSearchType extends AbstractType
                 'empty_data' => null,
 
             ))
-            ->add('creationDateMin',DateType::class, array(
+            ->add('firstDayMin',DateType::class, array(
                 'required' => false,
                 'empty_data' => null,
             ))
-            ->add('creationDateMax',DateType::class, array(
+            ->add('firstDayMax',DateType::class, array(
                 'required' => false,
                 'empty_data' => null,
             ))
-            ->add('lastModificationMin',DateType::class, array(
+            ->add('lastDayMin',DateType::class, array(
                 'required' => false,
                 'empty_data' => null,
             ))
-            ->add('lastModificationMax',DateType::class, array(
+            ->add('lastDayMax',DateType::class, array(
                 'required' => false,
                 'empty_data' => null,
             ))
@@ -77,16 +77,17 @@ class SiteSearchType extends AbstractType
                 ),
 
             ))
-            ->add('validated',ChoiceType::class,array(
+            ->add('active',ChoiceType::class,array(
                 'expanded' => true,
                 'multiple' => false,
                 'required' => false,
-                'placeholder' => 'pending',
-                'empty_data' => 0,
+                'placeholder' => $translator->trans('active'),
+                'empty_data' => 1,
 
                 'choices'  => array(
-                    'validated' => 1,
+                    $translator->trans('inactive') => 0,
                 ),
+
             ))
 
             ->add('flagged',ChoiceType::class,array(
@@ -96,8 +97,7 @@ class SiteSearchType extends AbstractType
                 'placeholder' => false,
 
                 'choices'  => array(
-
-                    'flagged' => 1,
+                    $translator->trans('flagged') => 1,
                 ),
             ))
 

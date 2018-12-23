@@ -26,7 +26,9 @@ class WorkDayFixtures extends BaseFixtures implements DependentFixtureInterface
 
     public function genWorkdays(ObjectManager $manager)
     {
-        for($i=0;$i<self::MAX_AMOUNT_OF_WORKDAYS;$i++){
+        $dates = $this->genDatesArray(self::MAX_AMOUNT_OF_WORKDAYS);
+        $i=0;
+        foreach ($dates as $date){
 
             $workers = $this->getRandAmountOfWorkers();
             /** @var $author Worker */
@@ -45,7 +47,7 @@ class WorkDayFixtures extends BaseFixtures implements DependentFixtureInterface
 
             $workDay->setAuthor($author);
             $workDay->setSite($site);
-            $workDay->setDate($this->faker->dateTimeBetween('-3 years', 'now'));
+            $workDay->setDate($date);
             $workDay->setComment($this->faker->optional(0.2)->text(140));
             //TODO photo
             $this->addFlag($manager,$workDay);
@@ -54,8 +56,13 @@ class WorkDayFixtures extends BaseFixtures implements DependentFixtureInterface
 
             $this->addRefToIndex(self::REF_WORK_DAY,$workDay,$i);
             $site->addWorkDay($workDay);
+            if($i===0){
+                $site->setfirstWorkDay($date);
+            }
+            $site->setlastWorkDay($date);
             $manager->persist($site);
             $manager->persist($workDay);
+            $i++;
         }
     }
 
@@ -146,4 +153,13 @@ class WorkDayFixtures extends BaseFixtures implements DependentFixtureInterface
             SiteFixtures::class,
         );
     }
+    public function genDatesArray($amount){
+        $dates = [];
+        for ($i=0; $i<$amount; $i++){
+            $dates[$i] = $this->faker->dateTimeBetween('-3 years', 'now');
+        }
+        sort($dates);
+        return $dates;
+    }
+
 }

@@ -50,19 +50,63 @@ class SiteRepository extends ServiceEntityRepository
 
     }
 
-    public function searchSites($searchString)
+    public function searchSites($searchString, $firstDayMin,$firstDayMax,$lastDayMin,$lastDayMax,$distance,$finished,$active,$flagged)
     {
-        $string = '%' . $searchString . '%';
-
         $qb = $this->createQueryBuilder('s');
         $this->addBasicJoins($qb);
+        $string = '%' . $searchString . '%';
 
         $qb->where('s.name LIKE :string');
         $qb->orWhere('s.shortName LIKE :string');
         $qb->orWhere('s.locality LIKE :string');
         $qb->setParameter('string', $string);
-        $qb->groupBy('s.id');
 
+        if($firstDayMin || $firstDayMax){
+            $qb->andWhere('s.firstWorkDay BETWEEN :min AND :max');
+            if ($firstDayMin){
+                $qb->setParameter('min', $firstDayMin);
+            }else{
+                $date = new \DateTime('2000-01-01');
+                $qb->setParameter('min', $date);
+            }
+            if ($firstDayMax){
+                $qb->setParameter('max', $firstDayMax);
+            }else{
+                $now = new \DateTime();
+                $qb->setParameter('max', $now);
+            }
+        }
+
+        if($lastDayMin || $lastDayMax){
+            dump($lastDayMax);
+            $qb->andWhere('s.lastWorkDay BETWEEN :min AND :max');
+            if ($lastDayMin){
+                $qb->setParameter('min', $lastDayMin);
+            }else{
+                $date = new \DateTime('2000-01-01');
+                $qb->setParameter('min', $date);
+            }
+            if ($lastDayMax){
+                $qb->setParameter('max', $lastDayMax);
+            }else{
+                $now = new \DateTime();
+                $qb->setParameter('max', $now);
+            }
+        }
+        //TODO distance;
+
+        $qb->andWhere('s.finished = :finished');
+        $qb->setParameter('finished', $finished);
+
+        $qb->andWhere('s.active = :active');
+        $qb->setParameter('active', $active);
+
+        $qb->andWhere('wd.flagged = :flagged');
+        $qb->setParameter('flagged', $flagged);
+
+
+
+        $qb->groupBy('s.id');
 
         $query = $qb->getQuery();
         return $query->getResult();

@@ -79,6 +79,21 @@ class Site
     */
     private $participations;
 
+    /**
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private $firstWorkDay;
+
+    /**
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private $lastWorkDay;
+
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $finished;
+
     public function __construct()
     {
         $this->tasks = new ArrayCollection();
@@ -288,6 +303,42 @@ class Site
                 $participation->setSite(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getfirstWorkDay(): ?\DateTimeInterface
+    {
+        return $this->firstWorkDay;
+    }
+
+    public function setfirstWorkDay(\DateTimeInterface $firstWorkDay): self
+    {
+        $this->firstWorkDay = $firstWorkDay;
+
+        return $this;
+    }
+
+    public function getlastWorkDay(): ?\DateTimeInterface
+    {
+        return $this->lastWorkDay;
+    }
+
+    public function setlastWorkDay(?\DateTimeInterface $lastWorkDay): self
+    {
+        $this->lastWorkDay = $lastWorkDay;
+
+        return $this;
+    }
+
+    public function getFinished(): ?bool
+    {
+        return $this->finished;
+    }
+
+    public function setFinished(bool $finished): self
+    {
+        $this->finished = $finished;
 
         return $this;
     }

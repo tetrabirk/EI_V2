@@ -34,7 +34,7 @@ class SiteFixtures extends BaseFixtures implements DependentFixtureInterface
             $site->setLatitude($this->faker->latitude(50.195540, 50.70272));
             $site->setLongitude($this->faker->longitude(4.241172, 6.086875));
             $site->setActive(true);
-
+            $site->setFinished(false);
             $this->genTasks($manager,$site,$i);
             $this->genParticipations($manager,$site,$i);
 

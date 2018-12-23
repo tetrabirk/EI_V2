@@ -2,7 +2,7 @@
 
 {% block title %}TEST{% endblock %}
 {% block aside_left %}
-    {{ form_start(form) }}
+    {{ form_start(form, {'action': path('search'), 'method': 'GET'}) }}
     {{ form_rest(form) }}
     {{ form_end(form) }}
 {% endblock %}

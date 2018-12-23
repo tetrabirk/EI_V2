@@ -7,6 +7,7 @@ use App\Entity\WorkDay;
 use App\Form\SiteSearchType;
 use App\Repository\SiteRepository;
 use App\Repository\WorkDayRepository;
+use Faker\Provider\DateTime;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -31,8 +32,8 @@ class SiteController extends AbstractController
         }
 
         $sites = $this->getRepo()->getSiteList();
-
         $form = $this->createForm(SiteSearchType::class);
+
         return $this->render('site/site_all.html.twig', array(
             'sites' => $sites,
             'form' => $form->createView(),
@@ -47,14 +48,22 @@ class SiteController extends AbstractController
      * @return Response
      */
     public function search(Request $request):Response{
-        dump($request);
-        $searchString = $request->query->get('search')['string'];
+        $search = $request->query->get('site_search');
+        $searchString = $search['string'];
+        $firstDayMin = $this->arrayToDate($search['firstDayMin']);
+        $firstDayMax = $this->arrayToDate($search['firstDayMax']);
+        $lastDayMin = $this->arrayToDate($search['lastDayMin']);
+        $lastDayMax = $this->arrayToDate($search['lastDayMax']);
+        $distance = $search['distance'];
+        $finished = (!empty($search['finished']) ? $search['finished'] : 0) ;
+        $active = (!empty($search['active']) ? $search['active'] : 1);
+        $flagged = (!empty($search['flagged']) ? $search['flagged'] : 0);
+        dump($finished);
 
-        $sites= $this->getRepo()->searchSites($searchString);
-        $form = $this->createForm(SiteSearchType::class,array(
-            'action' => $this->generateUrl('search'),
-            'method' => 'GET',
-        ));
+        $sites= $this->getRepo()->searchSites($searchString, $firstDayMin,$firstDayMax,$lastDayMin,$lastDayMax,$distance,$finished,$active,$flagged);
+
+        $form = $this->createForm(SiteSearchType::class);
+
         return $this->render('site/site_all.html.twig', array(
             'sites' => $sites,
             'form' => $form->createView(),
@@ -66,6 +75,19 @@ class SiteController extends AbstractController
         /** @var SiteRepository $sr */
         $sr = $this->getDoctrine()->getRepository(Site::class);
         return $sr;
+
+    }
+    //TODO make a service out of this
+    public function arrayToDate($array){
+        if ($array['year'] === '' || $array['month'] === ''|| $array['day'] === '' ){
+            return null;
+        }else{
+            $y = $array['year'] ?? '0000';
+            $m = $array['month'] ?? '00';
+            $d = $array['day'] ?? '00';
+
+            return new \DateTime($y.'-'.$m.'-'.$d);
+        }
 
     }
 }

@@ -11,3 +11,8 @@ Connexion: Connexion
 'À Propos': 'À Propos'
 finished: Clôturé
 ongoing: 'En cours'
+pending: 'En attente'
+validated: Validé
+flagged: Signalé
+active: actif
+inactive: non-actif

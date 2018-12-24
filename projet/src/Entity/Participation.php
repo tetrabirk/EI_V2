@@ -73,4 +73,9 @@ class Participation
 
         return $this;
     }
+
+    public function __toString()
+    {
+        return $this->getPerson().'>'.$this->getRole().'<'.$this->getSite();
+    }
 }

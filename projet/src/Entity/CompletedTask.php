@@ -73,4 +73,8 @@ class CompletedTask
 
         return $this;
     }
+    public function __toString()
+    {
+        return 'CT'.$this->getTask().'-'.$this->getWorker();
+    }
 }

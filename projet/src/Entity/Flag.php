@@ -95,4 +95,9 @@ class Flag
 
         return $this;
     }
+
+    public function __toString()
+    {
+        return $this->getDate()->format('d-M-Y').'-'.substr($this->getComment(),0,25);
+    }
 }

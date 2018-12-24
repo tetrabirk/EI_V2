@@ -1,0 +1,41 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}TEST{% endblock %}
+{% block aside_left %}
+    {{ form_start(form, {'action': path('wd-search'), 'method': 'GET'}) }}
+    {{ form_rest(form) }}
+    {{ form_end(form) }}
+{% endblock %}
+{% block content %}
+
+<section>
+    <h1>workday  ✅</h1>
+
+    <div>
+        {% for wd in workdays %}
+        <span><strong>{{ wd }}</strong></span><br>
+        {% endfor %}
+        {% set lastDate = date('1-1-2000') %}
+        {% for wd in workdays %}
+            {% if  lastDate != wd.date %}
+                <h2>{{ wd.date|date('d-m-Y') }}</h2>
+                {% set lastDate = wd.date %}
+            {% endif %}
+            <div>
+                <h3>
+                    {{ wd.site.shortname }} - {{ wd.site.name }}
+                    {% transchoice wd.validated %}
+                        {0} not validated|{1}validated
+                    {% endtranschoice %}
+                    {% transchoice wd.flagged %}
+                        {0} not flagged|{1}flagged
+                    {% endtranschoice %}
+                </h3>
+            </div>
+        {% endfor %}
+    </div>
+    <hr>
+
+
+</section>
+{% endblock %}

@@ -203,4 +203,9 @@ class WorkDay
 
         return $this;
     }
+
+    public function __toString()
+    {
+        return 'WD-'.$this->getDate()->format('d-M-Y').'-'.$this->getSite();
+    }
 }

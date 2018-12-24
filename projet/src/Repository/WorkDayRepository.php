@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\WorkDay;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\QueryBuilder;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
 /**
@@ -21,11 +22,7 @@ class WorkDayRepository extends ServiceEntityRepository
     public function getWorkdayList(){
         $qb = $this->createQueryBuilder('wd');
 
-        $qb->leftJoin('wd.author','au')->addSelect('au');
-        $qb->leftJoin('wd.workers','wo')->addSelect('wo');
-        $qb->leftJoin('wo.completedTasks','ct')->addSelect('ct');
-        $qb->leftJoin('ct.task','t')->addSelect('t');
-
+        $this->addBasicJoins($qb);
 
         $query = $qb->getQuery();
         return $query->getResult();
@@ -33,11 +30,10 @@ class WorkDayRepository extends ServiceEntityRepository
 
     public function getOneWorkDay($id){
         $qb = $this->createQueryBuilder('wd');
+
+        $this->addBasicJoins($qb);
+
         $qb->leftJoin('wd.site','s')->addSelect('s');
-        $qb->leftJoin('wd.author','au')->addSelect('au');
-        $qb->leftJoin('wd.workers','wo')->addSelect('wo');
-        $qb->leftJoin('wo.completedTasks','ct')->addSelect('ct');
-        $qb->leftJoin('ct.task','ta')->addSelect('ta');
         $qb->leftJoin('s.participations','pa')->addSelect('pa');
         $qb->leftJoin('pa.person','pe')->addSelect('pe');
 
@@ -49,4 +45,32 @@ class WorkDayRepository extends ServiceEntityRepository
 
     }
 
+    public function searchWorkDays($searchString)
+    {
+        $qb = $this->createQueryBuilder('wd');
+        $this->addBasicJoins($qb);
+        $string = '%' . $searchString . '%';
+
+        $qb->where('s.name LIKE :string');
+        $qb->orWhere('s.shortName LIKE :string');
+        $qb->orWhere('s.locality LIKE :string');
+        $qb->setParameter('string', $string);
+
+        $qb->groupBy('wd.id');
+        $qb->orderBy('wd.date DESC'); //TODO pas moyen de changer le sens (???)
+        $query = $qb->getQuery();
+        return $query->getResult();
+    }
+
+    /**
+     * @param QueryBuilder $qb
+     */
+    public function addBasicJoins(QueryBuilder $qb): void
+    {
+        $qb->leftJoin('wd.author','au')->addSelect('au');
+        $qb->leftJoin('wd.workers','wo')->addSelect('wo');
+        $qb->leftJoin('wo.completedTasks','ct')->addSelect('ct');
+        $qb->leftJoin('ct.task','t')->addSelect('t');
+
+    }
 }

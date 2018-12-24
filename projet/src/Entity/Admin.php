@@ -10,4 +10,8 @@ use Doctrine\ORM\Mapping as ORM;
 class Admin extends User
 {
 
+    public function __toString()
+    {
+        return 'ADMIN-'.$this->getName();
+    }
 }

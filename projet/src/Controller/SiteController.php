@@ -3,11 +3,8 @@
 namespace App\Controller;
 
 use App\Entity\Site;
-use App\Entity\WorkDay;
 use App\Form\SiteSearchType;
 use App\Repository\SiteRepository;
-use App\Repository\WorkDayRepository;
-use Faker\Provider\DateTime;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -33,6 +30,7 @@ class SiteController extends AbstractController
 
         $sites = $this->getRepo()->getSiteList();
         $form = $this->createForm(SiteSearchType::class);
+//TODO make function out of this
 
         return $this->render('site/site_all.html.twig', array(
             'sites' => $sites,
@@ -43,7 +41,7 @@ class SiteController extends AbstractController
     }
 
     /**
-     * @Route("/s/",name="search")
+     * @Route("/s/",name="site-search")
      * @param Request
      * @return Response
      */
@@ -63,6 +61,7 @@ class SiteController extends AbstractController
         $sites= $this->getRepo()->searchSites($searchString, $firstDayMin,$firstDayMax,$lastDayMin,$lastDayMax,$distance,$finished,$active,$flagged);
 
         $form = $this->createForm(SiteSearchType::class);
+//TODO make function out of this
 
         return $this->render('site/site_all.html.twig', array(
             'sites' => $sites,

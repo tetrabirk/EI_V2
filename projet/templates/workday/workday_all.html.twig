@@ -10,7 +10,7 @@
 
 <section>
     <h1>workday  ✅</h1>
-
+    {% dump workdays %}
     <div>
         {% for wd in workdays %}
         <span><strong>{{ wd }}</strong></span><br>
@@ -31,6 +31,18 @@
                         {0} not flagged|{1}flagged
                     {% endtranschoice %}
                 </h3>
+                {% for worker in wd.workers %}
+                    <h4>{{ worker }}</h4>
+                    <ul>
+                        {% for ct in worker.completedTasks if ct.workDay == wd %}
+                            <li>{{ ct.task.code }} - {{ ct.task.name }} - {{ ct.duration|date('H:i') }}</li>
+                        {% endfor %}
+                    </ul>
+
+                {% endfor %}
+                <div>
+
+                </div>
             </div>
         {% endfor %}
     </div>

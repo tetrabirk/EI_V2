@@ -33,6 +33,12 @@ class CompletedTask
      */
     private $worker;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\WorkDay")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $workday;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -76,5 +82,17 @@ class CompletedTask
     public function __toString()
     {
         return 'CT'.$this->getTask().'-'.$this->getWorker();
+    }
+
+    public function getWorkday(): ?WorkDay
+    {
+        return $this->workday;
+    }
+
+    public function setWorkday(?WorkDay $workday): self
+    {
+        $this->workday = $workday;
+
+        return $this;
     }
 }

@@ -111,6 +111,7 @@ class WorkDayFixtures extends BaseFixtures implements DependentFixtureInterface
             $task->addCompletedTask($completedTask);
             $worker->addCompletedTask($completedTask);
             $completedTask->setWorker($worker);
+            $completedTask->setWorkday($workDay);
             $workDay->addWorker($worker);
             $manager->persist($completedTask);
             $manager->persist($worker);

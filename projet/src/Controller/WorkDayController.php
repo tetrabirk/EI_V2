@@ -40,15 +40,21 @@ class WorkDayController extends AbstractController
     }
 
     /**
-     * @Route("/s/",name="wd-search")
+     * @Route("/s-wd/",name="wd-search")
      * @param Request
      * @return Response
      */
     public function search(Request $request):Response{
         $search = $request->query->get('wd_search');
-        $searchString = $search['string'];
+        $dateMin = $this->arrayToDate($search['dateMin']);
+        $dateMax = $this->arrayToDate($search['dateMax']);
+        $site = $search['site'];
+        $author = $search['author'];
+        $workers = $search['workers'];
+        $validated = $search['validated'];
+        $flagged = (!empty($search['flagged']) ? $search['flagged'] : 0);
 
-        $workDays= $this->getRepo()->searchWorkDays($searchString);
+        $workDays= $this->getRepo()->searchWorkDays($dateMin,$dateMax,$site,$author,$workers,$validated,$flagged);
         $form = $this->createForm(WorkDaySearchType::class);
 //TODO make function out of this
 
@@ -63,6 +69,20 @@ class WorkDayController extends AbstractController
         /** @var WorkDayRepository $wdr */
         $wdr = $this->getDoctrine()->getRepository(WorkDay::class);
         return $wdr;
+
+    }
+
+    //TODO make a service out of this
+    public function arrayToDate($array){
+        if ($array['year'] === '' || $array['month'] === ''|| $array['day'] === '' ){
+            return null;
+        }else{
+            $y = $array['year'] ?? '0000';
+            $m = $array['month'] ?? '00';
+            $d = $array['day'] ?? '00';
+
+            return new \DateTime($y.'-'.$m.'-'.$d);
+        }
 
     }
 

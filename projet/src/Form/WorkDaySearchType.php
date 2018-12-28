@@ -3,6 +3,10 @@
 namespace App\Form;
 
 use App\Entity\Site;
+use App\Entity\Worker;
+use App\Repository\SiteRepository;
+use App\Repository\WorkerRepository;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
@@ -30,62 +34,61 @@ class WorkDaySearchType extends AbstractType
         $translator->addLoader('array',new ArrayLoader());
 
         $builder
-            ->add('string',SearchType::class, array(
-                'required' => false,
-                'empty_data' => null,
-
-            ))
-            ->add('firstDayMin',DateType::class, array(
+            ->add('dateMin',DateType::class, array(
                 'required' => false,
                 'empty_data' => null,
             ))
-            ->add('firstDayMax',DateType::class, array(
+            ->add('dateMax',DateType::class, array(
                 'required' => false,
                 'empty_data' => null,
             ))
-            ->add('lastDayMin',DateType::class, array(
-                'required' => false,
-                'empty_data' => null,
-            ))
-            ->add('lastDayMax',DateType::class, array(
-                'required' => false,
-                'empty_data' => null,
-            ))
-            ->add('distance', ChoiceType::class,array(
-                'expanded' => false,
-                'multiple' => false,
-                'empty_data' => null,
+            ->add('site',EntityType::class,array(
+                'class' => Site::class,
                 'required' => false,
 
-                'choices'  => array(
-                    '5km' => 5,
-                    '10km' => 10,
-                    '25km' => 25,
-                    '50km' => 50,
-                    '100km'=> 100,
-                ),
+                'placeholder' => $translator->trans('--All--'),
+                'empty_data' => null,
+                'multiple' =>true,
+                'query_builder' => function (SiteRepository $sr){
+                    return $sr->getSitesSimple();
+                },
+
             ))
-            ->add('finished',ChoiceType::class,array(
+            ->add('author',EntityType::class,array(
+                'class' => Worker::class,
+                'required' => false,
+
+                'placeholder' => $translator->trans('--All--'),
+                'empty_data' => null,
+                'multiple' =>true,
+                'query_builder' => function (WorkerRepository $wr){
+                    return $wr->getAuthorsSimple();
+                },
+
+            ))
+            ->add('worker',EntityType::class,array(
+                'class' => Worker::class,
+                'required' => false,
+
+                'placeholder' => $translator->trans('--All--'),
+                'empty_data' => null,
+                'multiple' =>true,
+                'query_builder' => function (WorkerRepository $wr){
+                    return $wr->getWorkersSimple();
+                },
+
+            ))
+
+
+            ->add('validated',ChoiceType::class,array(
                 'expanded' => true,
-                'multiple' => false,
+                'multiple' => true,
                 'required' => false,
-                'placeholder' => $translator->trans('ongoing'),
-                'empty_data' => 0,
+                'empty_data' => null,
 
                 'choices'  => array(
-                    $translator->trans('finished') => 1,
-                ),
-
-            ))
-            ->add('active',ChoiceType::class,array(
-                'expanded' => true,
-                'multiple' => false,
-                'required' => false,
-                'placeholder' => $translator->trans('active'),
-                'empty_data' => 1,
-
-                'choices'  => array(
-                    $translator->trans('inactive') => 0,
+                    $translator->trans('validated') => 1,
+                    $translator->trans('not validated') => 0,
                 ),
 
             ))

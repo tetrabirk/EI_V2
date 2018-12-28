@@ -45,19 +45,49 @@ class WorkDayRepository extends ServiceEntityRepository
 
     }
 
-    public function searchWorkDays($searchString)
+    public function searchWorkDays($dateMin,$dateMax,$site,$author,$workers,$validated,$flagged)
     {
         $qb = $this->createQueryBuilder('wd');
         $this->addBasicJoins($qb);
-        $string = '%' . $searchString . '%';
 
-        $qb->where('s.name LIKE :string');
-        $qb->orWhere('s.shortName LIKE :string');
-        $qb->orWhere('s.locality LIKE :string');
-        $qb->setParameter('string', $string);
+        if($dateMin || $dateMax){
+            $qb->where('wd.date BETWEEN :min AND :max');
+            if ($dateMin){
+                $qb->setParameter('min', $dateMin);
+            }else{
+                $date = new \DateTime('2000-01-01');
+                $qb->setParameter('min', $date);
+            }
+            if ($dateMax){
+                $qb->setParameter('max', $dateMax);
+            }else{
+                $now = new \DateTime();
+                $qb->setParameter('max', $now);
+            }
+        }
+        if ($site)
+        {
+            $qb->expr()->in('wd.site',$site);
+        }
+        if ($author)
+        {
+            $qb->expr()->in('wd.author',$author);
+        }
+        if ($workers)
+        {
+            $qb->expr()->in('wd.workers',$workers);
+        }
+        if($validated)
+        {
+            $qb->andWhere('s.validated = :validated');
+            $qb->setParameter('validated', $validated);
+
+        }
+        $qb->andWhere('wd.flagged = :flagged');
+        $qb->setParameter('flagged', $flagged);
 
         $qb->groupBy('wd.id');
-        $qb->orderBy('wd.date DESC'); //TODO pas moyen de changer le sens (???)
+       // $qb->orderBy('wd.date DESC'); //TODO pas moyen de changer le sens (???)
         $query = $qb->getQuery();
         return $query->getResult();
     }

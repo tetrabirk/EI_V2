@@ -13,6 +13,10 @@ finished: Clôturé
 ongoing: 'En cours'
 pending: 'En attente'
 validated: Validé
+'not validated': 'Non validé'
 flagged: Signalé
 active: actif
 inactive: non-actif
+'{0} not validated|{1}validated': '__{0} not validated|{1}validated'
+'{0} not flagged|{1}flagged': '__{0} not flagged|{1}flagged'
+--All--: --Tous--

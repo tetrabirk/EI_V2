@@ -50,6 +50,31 @@ class SiteRepository extends ServiceEntityRepository
 
     }
 
+    /**
+     * @return QueryBuilder
+     */
+    public function getSitesSimple()
+    {
+        $qb = $this->createQueryBuilder('s');
+        $qb->where('s.active = 1');
+        $qb->orderBy('s.shortName','ASC');
+
+        return $qb;
+
+    }
+
+    /**
+     * @param $searchString
+     * @param $firstDayMin
+     * @param $firstDayMax
+     * @param $lastDayMin
+     * @param $lastDayMax
+     * @param $distance
+     * @param $finished
+     * @param $active
+     * @param $flagged
+     * @return mixed
+     */
     public function searchSites($searchString, $firstDayMin,$firstDayMax,$lastDayMin,$lastDayMax,$distance,$finished,$active,$flagged)
     {
         $qb = $this->createQueryBuilder('s');
@@ -78,7 +103,6 @@ class SiteRepository extends ServiceEntityRepository
         }
 
         if($lastDayMin || $lastDayMax){
-            dump($lastDayMax);
             $qb->andWhere('s.lastWorkDay BETWEEN :min AND :max');
             if ($lastDayMin){
                 $qb->setParameter('min', $lastDayMin);

@@ -41,7 +41,7 @@ class SiteController extends AbstractController
     }
 
     /**
-     * @Route("/s/",name="site-search")
+     * @Route("/s-s/",name="site-search")
      * @param Request
      * @return Response
      */

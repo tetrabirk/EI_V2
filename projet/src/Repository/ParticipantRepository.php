@@ -12,7 +12,7 @@ use Symfony\Bridge\Doctrine\RegistryInterface;
  * @method Participation[]    findAll()
  * @method Participation[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class ParticipantRepository extends ServiceEntityRepository
+class ParticipantionRepository extends ServiceEntityRepository
 {
     public function __construct(RegistryInterface $registry)
     {

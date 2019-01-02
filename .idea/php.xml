@@ -101,6 +101,7 @@
       <path value="$PROJECT_DIR$/projet/vendor/zendframework/zend-eventmanager" />
       <path value="$PROJECT_DIR$/projet/vendor/zendframework/zend-code" />
       <path value="$PROJECT_DIR$/projet/vendor/swiftmailer/swiftmailer" />
+      <path value="$PROJECT_DIR$/projet/vendor/cocur/slugify" />
     </include_path>
   </component>
   <component name="PhpProjectSharedConfiguration" php_language_level="7.1" />

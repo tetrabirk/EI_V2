@@ -53,9 +53,9 @@ class SiteController extends AbstractController
         $lastDayMin = $this->arrayToDate($search['lastDayMin']);
         $lastDayMax = $this->arrayToDate($search['lastDayMax']);
         $distance = $search['distance'];
-        $finished = (!empty($search['finished']) ? $search['finished'] : 0) ;
-        $active = (!empty($search['active']) ? $search['active'] : 1);
-        $flagged = (!empty($search['flagged']) ? $search['flagged'] : 0);
+        $finished = $search['finished'];
+        $active = $search['active'];
+        $flagged = $search['flagged'];
         dump($finished);
 
         $sites= $this->getRepo()->searchSites($searchString, $firstDayMin,$firstDayMax,$lastDayMin,$lastDayMax,$distance,$finished,$active,$flagged);

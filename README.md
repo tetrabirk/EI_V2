@@ -1,15 +1,17 @@
 ## LOGIN
-*	se connecter
+*	✅ se connecter
 *	a propos
-*	legal
 
 ## HOME
 *	afficher les dernières notifications
+    (see 'NOTIFICATIONS')
 *	link to all notification
-*	menu1: historique, chantier, personnes, matériaux
+*	✅ menu1: historique, chantier, personnes, matériaux 
 *	menu2: paramètres, notifications, nouvelle entrée
-*	menu2.1: Logout
+
+*	✅ menu2.1: Logout
 *	menu3 (quickaccess): au choix : new entry, new person (admin), new site (admin), map, link to specifik site, ...
+    (add to parametres)
 
 ## HISTORIQUE
 *	afficher les dernières entrées (voir WorkDay list)
@@ -21,6 +23,7 @@
 *	afficher les chantier actif (voir Site list)
 *	searchbar
 *	possibilité de trié par date (création, WD récent), proximité (géolocatlisation),Actif, to validate/flagged (admin)
+    (searchform)
 *	menu3 (shortcut): add site (voir Add Site), Site where I worked
 
 ## PERSONNES
@@ -95,6 +98,7 @@
 *	last WD (date)
 *	something to validate? flagged? (admin)
 *	creation date
+*   need coordinates for map
 
 ## Site Detail----------------- CHANTIER SINGLE
 *	site map
@@ -109,9 +113,10 @@
 *	Task List
 *	Worker List
 *	something to validate? flagged? (admin)
-*	creation date
+*	first wd date
 *	modify button (author/admin)
-*	flag button
+*   export csv
+*   import csv
 
 ## Add/modify Site(Admin)-----------------
 
@@ -152,7 +157,6 @@
 *	language
 *	CT list (by date)
 *	modify button (person/admin)
-*	flag button
 
 
 ## Add/modify Person(Admin)-----------------
@@ -181,3 +185,12 @@
 *	EASTER EGG (emoji fleur dans le legal -> rainbow background + cat gifs)
 *	add personXsite Role
 *	1 mail / day /week with all notifications not opened
+*   gen site with task from csv
+*   gen csv from Site
+*   print Site whith everything
+*   make "XL"view
+
+   
+///
+
+formtype base -> service et passé le paramètre locale en paramètre/argument

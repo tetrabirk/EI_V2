@@ -48,9 +48,10 @@ class WorkDayRepository extends ServiceEntityRepository
     public function searchWorkDays($dateMin,$dateMax,$site,$author,$workers,$validated,$flagged)
     {
         $qb = $this->createQueryBuilder('wd');
-        $this->addBasicJoins($qb);
+
 
         if($dateMin || $dateMax){
+            dump($dateMin);
             $qb->where('wd.date BETWEEN :min AND :max');
             if ($dateMin){
                 $qb->setParameter('min', $dateMin);
@@ -65,28 +66,37 @@ class WorkDayRepository extends ServiceEntityRepository
                 $qb->setParameter('max', $now);
             }
         }
-        if ($site)
-        {
-            $qb->expr()->in('wd.site',$site);
+
+        if ($site){
+            $qb->join('wd.site','s','WITH',$qb->expr()->in('s.id',$site));
         }
-        if ($author)
-        {
-            $qb->expr()->in('wd.author',$author);
+        if ($author){
+            $qb->join('wd.author','au','WITH',$qb->expr()->in('au.id',$author));
+        }else{
+            $qb->leftJoin('wd.author','au')->addSelect('au');
         }
-        if ($workers)
-        {
-            $qb->expr()->in('wd.workers',$workers);
+
+        if ($workers){
+            $qb->join('wd.workers','wo','WITH',$qb->expr()->in('wo.id',$workers));
+        }else{
+            $qb->leftJoin('wd.workers','wo')->addSelect('wo');
         }
+
+        $qb->leftJoin('wo.completedTasks','ct')->addSelect('ct');
+        $qb->leftJoin('ct.task','t')->addSelect('t');
+
         if($validated)
         {
             $qb->andWhere('s.validated = :validated');
             $qb->setParameter('validated', $validated);
-
         }
-        $qb->andWhere('wd.flagged = :flagged');
-        $qb->setParameter('flagged', $flagged);
+        if($flagged)
+        {
+            $qb->andWhere('wd.flagged = :flagged');
+            $qb->setParameter('flagged', $flagged);
+        }
 
-        $qb->groupBy('wd.id');
+       // $qb->groupBy('wd.id');
        // $qb->orderBy('wd.date DESC'); //TODO pas moyen de changer le sens (???)
         $query = $qb->getQuery();
         return $query->getResult();

@@ -45,14 +45,16 @@ class WorkDayController extends AbstractController
      * @return Response
      */
     public function search(Request $request):Response{
-        $search = $request->query->get('wd_search');
+
+        $search = $request->query->get('work_day_search');
+        dump($request);
         $dateMin = $this->arrayToDate($search['dateMin']);
         $dateMax = $this->arrayToDate($search['dateMax']);
-        $site = $search['site'];
-        $author = $search['author'];
-        $workers = $search['workers'];
-        $validated = $search['validated'];
-        $flagged = (!empty($search['flagged']) ? $search['flagged'] : 0);
+        $site = $search['site'] ?? null;
+        $author = $search['author'] ?? null;
+        $workers = $search['workers'] ?? null;
+        $validated = $search['validated'] ?? null;
+        $flagged = $search['flagged'] ?? null;
 
         $workDays= $this->getRepo()->searchWorkDays($dateMin,$dateMax,$site,$author,$workers,$validated,$flagged);
         $form = $this->createForm(WorkDaySearchType::class);

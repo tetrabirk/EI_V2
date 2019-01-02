@@ -17,6 +17,6 @@ validated: Validé
 flagged: Signalé
 active: actif
 inactive: non-actif
-'{0} not validated|{1}validated': '__{0} not validated|{1}validated'
-'{0} not flagged|{1}flagged': '__{0} not flagged|{1}flagged'
+'{0} not validated|{1}validated': '{0} Non validé|{1}validated'
+'{0} not flagged|{1}flagged': '{0} Non Signalé|{1}Signalé'
 --All--: --Tous--

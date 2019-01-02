@@ -2,10 +2,12 @@
 
 namespace App\Form;
 
+use App\Entity\Participation;
+use App\Entity\Person;
 use App\Entity\Site;
-use App\Entity\Worker;
+use App\Repository\ParticipantionRepository;
+use App\Repository\PersonRepository;
 use App\Repository\SiteRepository;
-use App\Repository\WorkerRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -19,7 +21,7 @@ use Symfony\Component\Form\Extension\Core\Type\SearchType;
 use Symfony\Component\Translation\Loader\ArrayLoader;
 use Symfony\Component\Translation\Translator;
 
-class WorkDaySearchType extends AbstractType
+class PersonSearchType extends AbstractType
 {
 
     public function __construct()
@@ -34,14 +36,37 @@ class WorkDaySearchType extends AbstractType
         $translator->addLoader('array',new ArrayLoader());
 
         $builder
-            ->add('dateMin',DateType::class, array(
+            ->add('string',SearchType::class, array(
                 'required' => false,
                 'empty_data' => null,
+
             ))
-            ->add('dateMax',DateType::class, array(
+
+            ->add('role',EntityType::class,array(
+                'class' => Participation::class,
                 'required' => false,
+
+                'placeholder' => $translator->trans('--All--'),
                 'empty_data' => null,
+                'multiple' =>true,
+                'query_builder' => function (ParticipantionRepository $par){
+                    return $par->getRolesSimple();
+                },
+
             ))
+            ->add('company',EntityType::class,array(
+                'class' => Person::class,
+                'required' => false,
+
+                'placeholder' => $translator->trans('--All--'),
+                'empty_data' => null,
+                'multiple' =>true,
+                'query_builder' => function (PersonRepository $par){
+                    return $par->getCompaniesSimple();
+                },
+
+            ))
+
             ->add('site',EntityType::class,array(
                 'class' => Site::class,
                 'required' => false,
@@ -53,57 +78,6 @@ class WorkDaySearchType extends AbstractType
                     return $sr->getSitesSimple();
                 },
 
-            ))
-            ->add('author',EntityType::class,array(
-                'class' => Worker::class,
-                'required' => false,
-
-                'placeholder' => $translator->trans('--All--'),
-                'empty_data' => null,
-                'multiple' =>true,
-                'query_builder' => function (WorkerRepository $wr){
-                    return $wr->getAuthorsSimple();
-                },
-
-            ))
-            ->add('worker',EntityType::class,array(
-                'class' => Worker::class,
-                'required' => false,
-
-                'placeholder' => $translator->trans('--All--'),
-                'empty_data' => null,
-                'multiple' =>true,
-                'query_builder' => function (WorkerRepository $wr){
-                    return $wr->getWorkersSimple();
-                },
-
-            ))
-
-
-            ->add('validated',ChoiceType::class,array(
-                'expanded' => true,
-                'multiple' => true,
-                'required' => false,
-                'empty_data' => null,
-
-                'choices'  => array(
-                    $translator->trans('validated') => 1,
-                    $translator->trans('not validated') => 0,
-                ),
-
-            ))
-
-            ->add('flagged',ChoiceType::class,array(
-                'expanded' => true,
-                'multiple' => true,
-                'required' => false,
-                'empty_data' => null,
-
-                'choices'  => array(
-                    $translator->trans('flagged') => 1,
-                    $translator->trans('not flagged') => 0,
-
-                ),
             ))
 
             ->add('search', SubmitType::class, array(

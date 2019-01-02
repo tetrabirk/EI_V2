@@ -119,16 +119,22 @@ class SiteRepository extends ServiceEntityRepository
         }
         //TODO distance;
 
-        $qb->andWhere('s.finished = :finished');
-        $qb->setParameter('finished', $finished);
+        if($finished)
+        {
+            $qb->andWhere('s.finished = :finished');
+            $qb->setParameter('finished', $finished);
+        }
+        if($active)
+        {
+            $qb->andWhere('s.active = :active');
+            $qb->setParameter('active', $active);
+        }
 
-        $qb->andWhere('s.active = :active');
-        $qb->setParameter('active', $active);
-
-        $qb->andWhere('wd.flagged = :flagged');
-        $qb->setParameter('flagged', $flagged);
-
-
+        if($flagged)
+        {
+            $qb->andWhere('wd.flagged = :flagged');
+            $qb->setParameter('flagged', $flagged);
+        }
 
         $qb->groupBy('s.id');
 

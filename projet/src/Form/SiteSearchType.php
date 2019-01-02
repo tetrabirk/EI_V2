@@ -69,11 +69,12 @@ class SiteSearchType extends AbstractType
                 'expanded' => true,
                 'multiple' => false,
                 'required' => false,
-                'placeholder' => $translator->trans('ongoing'),
-                'empty_data' => 0,
+                'empty_data' => null,
 
                 'choices'  => array(
                     $translator->trans('finished') => 1,
+                    $translator->trans('ongoing') =>0,
+
                 ),
 
             ))
@@ -81,23 +82,25 @@ class SiteSearchType extends AbstractType
                 'expanded' => true,
                 'multiple' => false,
                 'required' => false,
-                'placeholder' => $translator->trans('active'),
-                'empty_data' => 1,
+                'empty_data' => null,
 
                 'choices'  => array(
                     $translator->trans('inactive') => 0,
-                ),
+                    $translator->trans('active') => 1
 
+                ),
             ))
 
             ->add('flagged',ChoiceType::class,array(
                 'expanded' => true,
                 'multiple' => true,
                 'required' => false,
-                'placeholder' => false,
+                'empty_data' => null,
 
                 'choices'  => array(
                     $translator->trans('flagged') => 1,
+                    $translator->trans('not flagged') => 0,
+
                 ),
             ))
 

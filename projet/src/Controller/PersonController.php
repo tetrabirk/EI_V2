@@ -46,15 +46,15 @@ class PersonController extends AbstractController
      * @return Response
      */
     public function search(Request $request):Response{
-        $search = $request->query->get('site_search');
+        $search = $request->query->get('person_search');
         $searchString = $search['string'];
         $site = $search['site'] ?? null;
-            $role =
-                $company=
+        $role = $search['role'] ?? null;
+        $company= $search['company'] ?? null;
 
 
         $persons= $this->getRepo()->searchPersons($searchString,$site,$role,$company);
-
+        dump($persons);
         $form = $this->createForm(PersonSearchType::class);
 //TODO make function out of this
 

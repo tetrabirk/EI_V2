@@ -5,7 +5,7 @@ namespace App\Form;
 use App\Entity\Participation;
 use App\Entity\Person;
 use App\Entity\Site;
-use App\Repository\ParticipantionRepository;
+use App\Repository\ParticipationRepository;
 use App\Repository\PersonRepository;
 use App\Repository\SiteRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
@@ -49,9 +49,18 @@ class PersonSearchType extends AbstractType
                 'placeholder' => $translator->trans('--All--'),
                 'empty_data' => null,
                 'multiple' =>true,
-                'query_builder' => function (ParticipantionRepository $par){
+                'query_builder' => function (ParticipationRepository $par){
                     return $par->getRolesSimple();
                 },
+                'choice_label' => function($participation){
+                    /** @var $participation Participation */
+                    return $participation->getRole();
+                },
+                'choice_value' => function($participation){
+                    /** @var $participation Participation */
+                    return $participation->getRole();
+                }
+
 
             ))
             ->add('company',EntityType::class,array(
@@ -61,9 +70,18 @@ class PersonSearchType extends AbstractType
                 'placeholder' => $translator->trans('--All--'),
                 'empty_data' => null,
                 'multiple' =>true,
-                'query_builder' => function (PersonRepository $par){
-                    return $par->getCompaniesSimple();
+                'query_builder' => function (PersonRepository $per){
+                    return $per->getCompaniesSimple();
                 },
+                'choice_label' => function($person){
+                    /** @var $person Person */
+                    return $person->getCompany();
+                },
+                'choice_value' => function($person){
+                    /** @var $person Person */
+                    return $person->getCompany();
+                }
+
 
             ))
 
@@ -77,6 +95,7 @@ class PersonSearchType extends AbstractType
                 'query_builder' => function (SiteRepository $sr){
                     return $sr->getSitesSimple();
                 },
+
 
             ))
 

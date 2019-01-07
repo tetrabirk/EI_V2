@@ -44,6 +44,18 @@ class PersonRepository extends ServiceEntityRepository
         $query = $qb->getQuery();
         return $query->getResult();
     }
+
+    /**
+     * @return QueryBuilder
+     */
+    public function getCompaniesSimple()
+    {
+        $qb = $this->createQueryBuilder('p');
+        $qb->orderBy('p.company','ASC');
+        $qb->groupBy('p.company');
+        return $qb;
+    }
+
     public function searchPersons($searchString,$site,$role,$company)
     {
         $qb = $this->createQueryBuilder('p');
@@ -51,20 +63,22 @@ class PersonRepository extends ServiceEntityRepository
         $string = '%' . $searchString . '%';
 
         $qb->where('p.name LIKE :string');
-        $qb->orWhere('p.firstname LIKE :string');
+        $qb->orWhere('p.firstName LIKE :string');
         $qb->setParameter('string', $string);
 
+
         if ($site || $role ){
+
             if($site){
                 $qb->join('p.participations','pa','WITH',$qb->expr()->in('pa.site',$site));
                 if($role){
-                    $qb->andWhere('pa.role LIKE :role');
+                    $qb->andWhere('pa.role IN (:role)');
                     $qb->setParameter('role', $role);
                 }
             }
             else{
                 $qb->leftJoin('p.participations','pa')->addSelect('pa');
-                $qb->andWhere('pa.role LIKE :role');
+                $qb->andWhere('pa.role IN (:role)');
                 $qb->setParameter('role', $role);
             }
 

@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\Participation;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\QueryBuilder;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
 /**
@@ -12,13 +13,24 @@ use Symfony\Bridge\Doctrine\RegistryInterface;
  * @method Participation[]    findAll()
  * @method Participation[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class ParticipantionRepository extends ServiceEntityRepository
+class ParticipationRepository extends ServiceEntityRepository
 {
     public function __construct(RegistryInterface $registry)
     {
         parent::__construct($registry, Participation::class);
     }
 
+    /**
+     * @return QueryBuilder
+     */
+    public function getRolesSimple()
+    {
+        $qb = $this->createQueryBuilder('p');
+        $qb->orderBy('p.role','ASC');
+        $qb->groupBy('p.role');
+        return $qb;
+
+    }
 //    /**
 //     * @return Participation[] Returns an array of Participation objects
 //     */

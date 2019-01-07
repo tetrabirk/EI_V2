@@ -1,0 +1,33 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}TEST{% endblock %}
+{% block aside_left %}
+    {{ form_start(form, {'action': path('person-search'), 'method': 'GET'}) }}
+    {{ form_rest(form) }}
+    {{ form_end(form) }}
+{% endblock %}
+{% block content %}
+
+<section>
+    <div>Map</div>
+</section>
+<section>
+    <h1>PERSONS  ✅</h1>
+
+
+    <h2>Person List</h2>
+    {% for person in persons %}
+        <h3>{{ person.firstname }} - {{ person.name }}</h3>
+        <div>{{ person.company }}</div>
+        <div>
+            {% for participation in person.participations %}
+                {{ participation.role }}&nbsp;
+            {% endfor %}
+        </div>
+
+        <hr>
+
+    {% endfor %}
+
+</section>
+{% endblock %}

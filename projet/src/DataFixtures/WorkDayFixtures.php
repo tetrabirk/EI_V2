@@ -56,6 +56,7 @@ class WorkDayFixtures extends BaseFixtures implements DependentFixtureInterface
 
             $this->addRefToIndex(self::REF_WORK_DAY,$workDay,$i);
             $site->addWorkDay($workDay);
+            //TODO add participation (if SiteXWorker not exist -> new participation)
             if($i===0){
                 $site->setfirstWorkDay($date);
             }

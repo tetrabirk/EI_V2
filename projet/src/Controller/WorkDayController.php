@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\WorkDay;
 use App\Form\WorkDaySearchType;
+use App\Form\WorkDayType;
 use App\Repository\WorkDayRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -48,6 +49,8 @@ class WorkDayController extends AbstractController
 
         $search = $request->query->get('work_day_search');
         dump($request);
+        //TODO make function out of this
+
         $dateMin = $this->arrayToDate($search['dateMin']);
         $dateMax = $this->arrayToDate($search['dateMax']);
         $site = $search['site'] ?? null;
@@ -64,6 +67,25 @@ class WorkDayController extends AbstractController
             'workdays' => $workDays,
             'form' => $form->createView(),
         ));
+    }
+
+    /**
+     * @Route("/new-entry/",name="new-workday")
+     * @param Request
+     * @return Response
+     */
+    public function newWorkDay(Request $request):Response
+    {
+        $workDay = $request->query->get('new_work_day');
+        dump($request);
+
+        $form = $this->createForm(WorkDayType::class);
+
+        //TODO make function out of this
+        return $this->render('workday/new_workday.html.twig',array(
+            'form' => $form->createView(),
+        ));
+
     }
 
     public function getRepo():WorkDayRepository

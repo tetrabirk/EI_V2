@@ -1,7 +1,7 @@
 {%  if app.user %}
     {% set username = app.user.firstname %}
 {% endif %}
-
+{% set page_alias = app.request.get('_route') %}
 <!DOCTYPE html>
 
 <html {% block html_attr %}lang="fr"{% endblock %}>
@@ -13,7 +13,8 @@
     <title>{% block title %}WD LOG - {{ company_name }}{% endblock %}</title>
 
 </head>
-<body id="body" class="lang_{{ language }} {% block body_classes %}  {% endblock %}" >
+
+<body id="body" class="lang_{{ language }} page_{{ page_alias }} {% block body_classes %}  {% endblock %} " >
 {% block body %}
 
 

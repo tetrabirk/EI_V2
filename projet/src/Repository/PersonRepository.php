@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\Person;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\Query\Expr\Join;
 use Doctrine\ORM\QueryBuilder;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
@@ -70,16 +71,16 @@ class PersonRepository extends ServiceEntityRepository
         if ($site || $role ){
 
             if($site){
-                $qb->join('p.participations','pa','WITH',$qb->expr()->in('pa.site',$site));
                 if($role){
-                    $qb->andWhere('pa.role IN (:role)');
-                    $qb->setParameter('role', $role);
+                    $qb->join('p.participations','pa','WITH',$qb->expr()->in('pa.site',$site));
+                    $qb->join('p.participations','pa','WITH',$qb->expr()->in('pa.site',$site));
+
+                }else{
+                    $qb->join('p.participations','pa','WITH',$qb->expr()->in('pa.site',$site));
                 }
             }
             else{
-                $qb->leftJoin('p.participations','pa')->addSelect('pa');
-                $qb->andWhere('pa.role IN (:role)');
-                $qb->setParameter('role', $role);
+                $qb->join('p.participations','pa', Join::WITH ,$qb->expr()->in('pa.role' ,$role));
             }
 
 

@@ -13,39 +13,26 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Translation\Loader\ArrayLoader;
 use Symfony\Component\Translation\Translator;
 
-class WorkDayType extends AbstractType
+class WorkDay2Type extends AbstractType
 {
-    private $site;
-
-    public function __construct(Site $site)
-    {
-        $this->site = $site;
-    }
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $locale = 'fr_BE';
-
+        /**
+         * var WorkDay $workday
+         */
+        $workday = $builder->getData();
         $translator = new Translator($locale);
         $translator->addLoader('array',new ArrayLoader());
 
         $builder
-            ->add('date')
-
-            ->add('workers', EntityType::class,array(
-                'class' => Worker::class,
-
-            ))
-
-            ->add('completedTasks', CollectionType::class,array(
-                'entry_type' => CompletedTaskType::class,
+            ->add('workers', CollectionType::class,array(
+                'entry_type' => WorkerWorkDayType::class,
                 'entry_options' => array(
-                    'current_site' => $this->site,
+                    'workday' => $workday,
                 )
-
-
             ))
-            ->add('comment')
-            ->add('site')
+           ->add('comment')
         ;
     }
 

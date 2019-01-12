@@ -3,7 +3,8 @@
 namespace App\Form;
 
 use App\Entity\CompletedTask;
-use App\Entity\Site;
+use App\Entity\WorkDay;
+use App\Entity\Task;
 use App\Repository\TaskRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
@@ -13,36 +14,38 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class CompletedTaskType extends AbstractType
 {
-    private $site;
-
-    public function __construct(Site $site)
-    {
-        $this->site = $site;
-    }
+    /**
+     * @var WorkDay $workday
+     */
+    private $workday;
 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        $this->workday = $options['workday'];
+        dump($options);
 
         $builder
-            ->add('duration', DateIntervalType::class, array(
-                'widget'      => 'choice',
-                'with_years'  => false,
-                'with_months' => false,
-                'with_days'   => false,
-                'with_hours'  => true,
-                'with_minutes' => true,
-                'hours' => range(0, 8),
-                'minutes' => range(0, 60,15)
-            ))
+            ->add('duration'
+//                , DateIntervalType::class, array(
+//                'widget'      => 'choice',
+//                'with_years'  => false,
+//                'with_months' => false,
+//                'with_days'   => false,
+//                'with_hours'  => true,
+//                'with_minutes' => true,
+//                'hours' => range(0, 8),
+//                'minutes' => range(0, 60,15)
+//            )
+            )
             ->add('task', EntityType::class, array(
+                'class' => Task::class,
+
                 'query_builder' => function (TaskRepository $tr) {
                     return $tr->createQueryBuilder('t')
-                        ->where('t.site LIKE :site')
-                        ->setParameter('site', $this->site);
+                        ->where('t.site = :site')
+                        ->setParameter('site', $this->workday->getSite());
                 },
             ))
-           // ->add('worker')
-           // ->add('workday')
         ;
     }
 
@@ -50,6 +53,9 @@ class CompletedTaskType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => CompletedTask::class,
+            'workday' => null,
         ]);
+        $resolver->setRequired('workday');
+
     }
 }

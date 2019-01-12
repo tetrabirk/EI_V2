@@ -106,6 +106,18 @@ class WorkDay
         return $this->workers;
     }
 
+    /**
+     * @param mixed $workers
+     */
+    public function setWorkers($workers): void
+    {
+        foreach ($workers as $worker)
+        {
+            $this->addWorker($worker);
+        }
+    }
+
+
     public function addWorker(Worker $worker): self
     {
         if (!$this->workers->contains($worker)) {

@@ -3,8 +3,9 @@
 namespace App\Controller;
 
 use App\Entity\WorkDay;
+use App\Form\WorkDay2Type;
 use App\Form\WorkDaySearchType;
-use App\Form\WorkDayType;
+use App\Form\WorkDay1Type;
 use App\Repository\WorkDayRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -76,14 +77,26 @@ class WorkDayController extends AbstractController
      */
     public function newWorkDay(Request $request):Response
     {
-        $workDay = $request->query->get('new_work_day');
         dump($request);
+        //todo : add "&& is valid blablabla"
+        $form1 = $this->createForm(WorkDay1Type::class);
 
-        $form = $this->createForm(WorkDayType::class);
+        $form1->handleRequest($request);
+
+        if ($form1->isSubmitted() && $form1->isValid()) {
+
+            $workday = $form1->getData();
+            $form2 = $this->createForm(WorkDay2Type::class,$workday);
+
+            //TODO make function out of this
+            return $this->render('workday/new_workday.html.twig',array(
+                'form' => $form2->createView(),
+            ));
+        }
 
         //TODO make function out of this
         return $this->render('workday/new_workday.html.twig',array(
-            'form' => $form->createView(),
+            'form' => $form1->createView(),
         ));
 
     }

@@ -1,0 +1,17 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}TEST{% endblock %}
+{% block aside_left %}
+
+{% endblock %}
+{% block content %}
+
+<section>
+    <h1>new workday </h1>
+
+
+    {{ form_start(form, {'action': path('new-workday'), 'method': 'POST'}) }}
+    {{ form_rest(form) }}
+    {{ form_end(form) }}
+</section>
+{% endblock %}

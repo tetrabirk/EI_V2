@@ -26,6 +26,7 @@ class WorkerWorkDayType extends AbstractType
                     'workday' => $this->workday,
                 ),
                 'mapped'=>false,
+                'allow_extra_fields' => true,
             ))
 
         ;

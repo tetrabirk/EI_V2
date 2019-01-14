@@ -22,21 +22,19 @@ class CompletedTaskType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $this->workday = $options['workday'];
-        dump($options);
 
         $builder
-            ->add('duration'
-//                , DateIntervalType::class, array(
-//                'widget'      => 'choice',
-//                'with_years'  => false,
-//                'with_months' => false,
-//                'with_days'   => false,
-//                'with_hours'  => true,
-//                'with_minutes' => true,
-//                'hours' => range(0, 8),
-//                'minutes' => range(0, 60,15)
-//            )
-            )
+            ->add('duration', DateIntervalType::class, array(
+                'widget'      => 'choice',
+                'with_years'  => false,
+                'with_months' => false,
+                'with_days'   => false,
+                'with_hours'  => true,
+                'with_minutes' => true,
+                'hours' => range(0, 8),
+                //TODO custom prototype in WorkerWorkdayType where values = 'showed text'
+                'minutes' => range(0, 45,15)
+            ))
             ->add('task', EntityType::class, array(
                 'class' => Task::class,
 

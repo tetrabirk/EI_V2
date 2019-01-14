@@ -8,6 +8,7 @@ use App\Entity\Worker;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Translation\Loader\ArrayLoader;
@@ -30,9 +31,15 @@ class WorkDay2Type extends AbstractType
                 'entry_type' => WorkerWorkDayType::class,
                 'entry_options' => array(
                     'workday' => $workday,
-                )
+                ),
+                'allow_extra_fields' => true,
+
+
             ))
-           ->add('comment')
+            ->add('comment')
+            ->add('resume',SubmitType::class,array(
+
+            ))
         ;
     }
 

@@ -80,19 +80,36 @@ class WorkDayController extends AbstractController
         dump($request);
         //todo : add "&& is valid blablabla"
         $form1 = $this->createForm(WorkDay1Type::class);
-
         $form1->handleRequest($request);
 
         if ($form1->isSubmitted() && $form1->isValid()) {
-
+            dump('form1');
             $workday = $form1->getData();
             $form2 = $this->createForm(WorkDay2Type::class,$workday);
 
             //TODO make function out of this
-            return $this->render('workday/new_workday.html.twig',array(
+            return $this->render('workday/new_workday2.html.twig',array(
                 'form' => $form2->createView(),
             ));
         }
+
+
+        $form2 = $this->createForm(WorkDay2Type::class);
+        $form2->handleRequest($request);
+
+        if ($form2->isSubmitted() && $form2->isValid()) {
+            dump('form2');
+
+            $form_data = $form2->getData();
+
+
+            //TODO make function out of this
+            return $this->render('workday/new_workday3.html.twig',array(
+                'workday' => $form_data,
+            ));
+        }
+
+        dump('noform');
 
         //TODO make function out of this
         return $this->render('workday/new_workday.html.twig',array(

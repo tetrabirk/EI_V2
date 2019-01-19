@@ -13,87 +13,17 @@
     {{ form_start(form, {'action': path('new-workday'), 'method': 'POST'}) }}
 
         {{ form_row(form.workers) }}
-        <a href="#" id="add_completed_task" class="btn btn-default">
-            Add Completed Task
-        </a>
+
     {{ form_end(form) }}
 
-    {#TODO virer ce script d'ici et réécrire les commentaires#}
+    {#TODO virer ce script d'ici#}
     <script
             src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
             integrity="sha256-3edrmyuQ0w65f8gfBsqowzjJe2iM6n0nKciPUp8y+7E="
             crossorigin="anonymous">
     </script>
 
-    {# Voici le script en question : #}
-    {#TODO: select all 'work_day2_workers_n_completedTasks' and adapt function#}
-    <script type="text/javascript">
-        $(document).ready(function() {
+    <script src="{{ asset('js/workday_form.js') }}"></script>
 
-            // On récupère la balise <div> en question qui contient l'attribut « data-prototype » qui nous intéresse.
-            var $container = $('div#work_day2_workers_0_completedTasks');
-
-            // On définit un compteur unique pour nommer les champs qu'on va ajouter dynamiquement
-            var index = $container.find(':input').length;
-
-            // On ajoute un nouveau champ à chaque clic sur le lien d'ajout.
-            $('#add_completed_task').click(function(e) {
-                addCompletedTask($container);
-
-                e.preventDefault(); // évite qu'un # apparaisse dans l'URL
-                return false;
-            });
-
-            // On ajoute un premier champ automatiquement s'il n'en existe pas déjà un (cas d'une nouvelle annonce par exemple).
-            if (index == 0) {
-                addCompletedTask($container);
-            } else {
-                // S'il existe déjà des catégories, on ajoute un lien de suppression pour chacune d'entre elles
-                $container.children('div').each(function() {
-                    addDeleteLink($(this));
-                });
-            }
-
-            // La fonction qui ajoute un formulaire CategoryType
-            function addCompletedTask($container) {
-                // Dans le contenu de l'attribut « data-prototype », on remplace :
-                // - le texte "__name__label__" qu'il contient par le label du champ
-                // - le texte "__name__" qu'il contient par le numéro du champ
-                var template = $container.attr('data-prototype')
-                    .replace(/__name__label__/g, 'CT n°' + (index+1))
-                    .replace(/__name__/g,        index)
-                ;
-
-                // On crée un objet jquery qui contient ce template
-                var $prototype = $(template);
-
-                // On ajoute au prototype un lien pour pouvoir supprimer la catégorie
-                addDeleteLink($prototype);
-
-                // On ajoute le prototype modifié à la fin de la balise <div>
-                $container.append($prototype);
-
-                // Enfin, on incrémente le compteur pour que le prochain ajout se fasse avec un autre numéro
-                index++;
-            }
-
-            // La fonction qui ajoute un lien de suppression d'une catégorie
-            function addDeleteLink($prototype) {
-                // Création du lien
-                var $deleteLink = $('<a href="#" class="btn btn-danger">Supprimer</a>');
-
-                // Ajout du lien
-                $prototype.append($deleteLink);
-
-                // Ajout du listener sur le clic du lien pour effectivement supprimer la catégorie
-                $deleteLink.click(function(e) {
-                    $prototype.remove();
-
-                    e.preventDefault(); // évite qu'un # apparaisse dans l'URL
-                    return false;
-                });
-            }
-        });
-    </script>
 </section>
 {% endblock %}

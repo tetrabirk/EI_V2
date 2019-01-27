@@ -1,0 +1,65 @@
+framework:
+    workflows:
+        work_day:
+            type: 'state_machine'
+            audit_trail:
+                enabled: true
+            marking_store:
+                type: 'single_state'
+                arguments:
+                - 'state'
+            supports:
+                - App\Entity\WorkDay
+            initial_place: instantiated
+            places:
+                - instantiated
+                - to_complete
+                - completed
+                - summary
+                - unvalidated
+                - validated
+                - flagged
+            transitions:
+                add_basic_infos:
+                    from: instantiated
+                    to:   to_complete
+                add_completed_tasks:
+                    from: to_complete
+                    to:   completed
+                see_summary:
+                    from: completed
+                    to:   summary
+                submit_admin:
+                    guard: "is_granted('ROLE_ADMIN')"
+                    from: summary
+                    to:   validated
+                submit:
+                    guard: "is_granted('ROLE_WORKER')"
+                    from: summary
+                    to:   unvalidated
+                validate:
+                    guard: "is_granted('ROLE_ADMIN')"
+                    from: unvalidated
+                    to:   validated
+                flag:
+                    guard: "is_granted('ROLE_WORKER')"
+                    from: validated
+                    to:   flagged
+                modify:
+                    from:
+                        - to_complete
+                        - completed
+                        - summary
+                        - unvalidated
+                    to:   instantiated
+                modify_admin:
+                    guard: "is_granted('ROLE_ADMIN')"
+                    from:
+                        - validated
+                        - flagged
+                    to:   instantiated
+                ignore:
+                    guard: "is_granted('ROLE_ADMIN')"
+                    from: flagged
+                    to:   validated
+

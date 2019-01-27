@@ -7,14 +7,24 @@
 {% block content %}
 
 <section>
-    <h1>new workday </h1>
+    <h1>new workday 2</h1>
+
+    {{ form_start(form, {'action': path('new-workday-4'), 'method': 'POST'}) }}
 
 
-    {{ form_start(form, {'action': path('new-workday'), 'method': 'POST'}) }}
+    {{ form_row(form.workers) }}
 
-        {{ form_row(form.workers) }}
+    <div class="form-group">
+        {{ form_label(form.comment) }}
+        {{ form_widget(form.comment) }}
+    </div>
 
-    {{ form_end(form) }}
+    {{ form_widget(form.summary) }}
+
+
+    {{ form_end(form, {'render_rest': false}) }}
+
+
 
     {#TODO virer ce script d'ici#}
     <script

@@ -20,13 +20,13 @@ class Worker extends User
     private $completedTasks;
 
     /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\WorkDay", inversedBy="workers")
+     * @ORM\ManyToMany(targetEntity="App\Entity\WorkDay", inversedBy="workers", cascade={"persist"})
      * @ORM\JoinTable(name="workDays")
      */
     private $workDays;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\WorkDay", mappedBy="author", cascade={"remove"})
+     * @ORM\OneToMany(targetEntity="App\Entity\WorkDay", mappedBy="author", cascade={"persist"})
      */
     private $redactedWorkDays;
 

@@ -11,7 +11,21 @@
 
 
     {{ form_start(form, {'action': path('new-workday'), 'method': 'POST'}) }}
-    {{ form_rest(form) }}
-    {{ form_end(form) }}
+    <div class="form-group">
+        {{ form_label(form.date) }}
+        {{ form_widget(form.date) }}
+    </div>
+    <div class="form-group">
+        {{ form_label(form.site) }}
+        {{ form_widget(form.site) }}
+    </div>
+    <div class="form-group">
+        {{ form_label(form.workers) }}
+        {{ form_widget(form.workers) }}
+    </div>
+    {{ form_widget(form.next) }}
+
+
+    {{ form_end(form, {'render_rest': false}) }}
 </section>
 {% endblock %}

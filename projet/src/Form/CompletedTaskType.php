@@ -23,6 +23,7 @@ class CompletedTaskType extends AbstractType
     {
         $this->workday = $options['workday'];
 
+            dump('hoho');
         $builder
             ->add('duration', DateIntervalType::class, array(
                 'widget'      => 'choice',

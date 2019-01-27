@@ -1,7 +1,7 @@
 $(document).ready(function()
 {
     //array de container
-    $ct_containers = $('[id^=work_day2_workers_][id $=_completedTasks]');
+    $ct_containers = $('[id^=work_day_workers_][id $=_completedTasks]');
 
 
     $ct_containers.each(function()
@@ -81,12 +81,12 @@ $(document).ready(function()
 
         //recupération de l'index worker
         var container = e.target.previousSibling;
-        var regex1 = /(?<=work_day2_workers_).*(?=_completedTasks)/;
+        var regex1 = /(?<=work_day_workers_).*(?=_completedTasks)/;
         var workerIndex =  (container.id.match(regex1))[0];
 
 
         //récupération de la derniere CT
-        var lastCT = $('#work_day2_workers_'+workerIndex+'_completedTasks > div:last-of-type > div:first-of-type')[0];
+        var lastCT = $('#work_day_workers_'+workerIndex+'_completedTasks > div:last-of-type > div:first-of-type')[0];
 
         //si il n'y a pas de CT on fixe l'index à 0
 
@@ -94,14 +94,14 @@ $(document).ready(function()
             CTindex = 0;
         }else{
             //récupération de l'index CT
-            var regex2 = /(?<=work_day2_workers_._completedTasks_).*/;
+            var regex2 = /(?<=work_day_workers_._completedTasks_).*/;
             var CTindex = parseInt((lastCT.id.match(regex2))[0]);
             CTindex++;
 
         }
 
         //preparation des variables à envoyer à addCompletedTask
-        var $container = $('#work_day2_workers_'+workerIndex+'_completedTasks');
+        var $container = $('#work_day_workers_'+workerIndex+'_completedTasks');
         addCompletedTask($container,CTindex);
     });
 

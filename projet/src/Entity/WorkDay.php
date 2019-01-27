@@ -29,18 +29,18 @@ class WorkDay
     private $comment;
 
     /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Worker", mappedBy="workDays")
+     * @ORM\ManyToMany(targetEntity="App\Entity\Worker", mappedBy="workDays", cascade={"persist"})
      */
     private $workers;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Worker", inversedBy="redactedWorkDays", cascade={"remove"})
+     * @ORM\ManyToOne(targetEntity="App\Entity\Worker", inversedBy="redactedWorkDays", cascade={"persist"})
      * @ORM\JoinColumn(nullable=true, onDelete="SET NULL")
      */
     private $author;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Site", inversedBy="workDays")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Site", inversedBy="workDays",cascade={"persist"})
      * @ORM\JoinColumn(nullable=true, onDelete="SET NULL")
      */
     private $site;
@@ -59,6 +59,23 @@ class WorkDay
      * @ORM\Column(type="boolean")
      */
     private $flagged;
+
+    public $currentPlace;
+
+    /**
+     * @ORM\Column(type="json_array", nullable=true)
+     */
+    protected $state;
+
+    public function setState($state)
+    {
+        $this->state = $state;
+    }
+
+    public function getState()
+    {
+        return $this->state;
+    }
 
     public function __construct()
     {

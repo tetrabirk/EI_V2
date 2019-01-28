@@ -23,7 +23,6 @@ class CompletedTaskType extends AbstractType
     {
         $this->workday = $options['workday'];
 
-            dump('hoho');
         $builder
             ->add('duration', DateIntervalType::class, array(
                 'widget'      => 'choice',
@@ -34,7 +33,7 @@ class CompletedTaskType extends AbstractType
                 'with_minutes' => true,
                 'hours' => range(0, 8),
                 //TODO custom prototype in WorkerWorkdayType where values = 'showed text'
-                'minutes' => range(0, 45,15)
+                'minutes' => range(0, 45,15),
             ))
             ->add('task', EntityType::class, array(
                 'class' => Task::class,

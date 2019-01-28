@@ -94,6 +94,7 @@ class WorkDayController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $workday = $form->getData();
+            dump($request);
             $workday->setAuthor($this->getUser());
             $entityManager = $this->getDoctrine()->getManager();
 
@@ -101,7 +102,7 @@ class WorkDayController extends AbstractController
             {
                 $workflow->apply($workday, 'add_basic_infos');
                 $entityManager->persist($workday);
-               // $entityManager->flush();
+                $entityManager->flush();
             }
 
             return $this->forward('App\Controller\WorkDayController::newWorkDayStepTwo',array(
@@ -118,71 +119,145 @@ class WorkDayController extends AbstractController
      * @param Request $request, Registry $workflows
      * @return Response
      */
-    public function newWorkDayStepTwo(Request $request, Registry $workflows, $workday = null):Response
+    public function newWorkDayStepTwo(Request $request, Registry $workflows, $workday):Response
     {
-        dump($request);
+
         $workflow = $workflows->get($workday);
         $form = $this->createForm(WorkDayType::class, $workday, array(
             'places' => $workflow->getMarking($workday)->getPlaces()
         ));
-        $form->handleRequest($request);
-
-        //TODO make function out of this
-
-        dump($workday);
-
-        if ($form->get('summary')->isClicked() && $form->isSubmitted() && $form->isValid()) {
-
-            $workday = $form->getData();
-
-            $entityManager = $this->getDoctrine()->getManager();
-
-            if ($workflow->can($workday, 'add_completed_tasks'))
-            {
-                $workflow->apply($workday, 'add_completed_tasks');
-                $entityManager->persist($workday);
-                //$entityManager->flush();
-            }
-
-            return $this->forward('App\Controller\WorkDayController::newWorkDaySummary',array(
-                'workday' => $workday,
-            ));
-        }
 
         return $this->render('workday/new_workday2.html.twig',array(
             'form' => $form->createView(),
             'workday' => $workday
         ));
+
+
+//        if ($form->get('summary')->isClicked() && $form->isSubmitted() && $form->isValid()) {
+//
+//            $workday = $form->getData();
+//
+//            $entityManager = $this->getDoctrine()->getManager();
+//
+//            if ($workflow->can($workday, 'add_completed_tasks'))
+//            {
+//                $workflow->apply($workday, 'add_completed_tasks');
+//                $entityManager->persist($workday);
+//                $entityManager->flush();
+//            }
+//
+//            return $this->forward('App\Controller\WorkDayController::newWorkDaySummary',array(
+//                'workday' => $workday,
+//
+//            ));
+//        }
+
+
     }
 
     /**
-     * @Route("/new-entry-summary/",name="new-workday-3")
-     * @param Request $request, Registry $workflows
+     * @Route("/new-entry-validation/",name="new-workday-3")
+     * @param Request $request
+     * @param Registry $workflows
      * @return Response
      */
-    public function newWorkDaySummary(Request $request, Registry $workflows, $workday):Response
+    public function newWorkDayValidation(Request $request, Registry $workflows):Response
     {
+        $wdr = $this->getRepo();
+        $id = $_POST['work_day']['id'];
+        $workday = $wdr->find($id);
+        $workflow = $workflows->get($workday);
 
-        return $this->render('workday/summary.html.twig',array(
+        $form = $this->createForm(WorkDayType::class, $workday, array(
+            'places' => $workflow->getMarking($workday)->getPlaces()
+        ));
+        dump($form);
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+
+            $wd2 = $form->getData();
+            dump($workday);
+            dump($wd2);
+            $entityManager = $this->getDoctrine()->getManager();
+
+//            if ($workflow->can($workday, 'add_completed_tasks'))
+//            {
+//                $workflow->apply($workday, 'add_completed_tasks');
+//                $entityManager->persist($workday);
+//               // $entityManager->flush();
+//            }
+
+            return $this->forward('App\Controller\WorkDayController::newWorkDaySummary',array(
+                'workday' => $workday,
+
+            ));
+        }
+
+        //todo else back to form2
+        return $this->forward('App\Controller\WorkDayController::newWorkDayStepTwo',array(
             'workday' => $workday,
         ));
 
-
     }
+
     /**
-     * @Route("/new-entry-test/",name="new-workday-4")
+     * @Route("/new-entry-summary/",name="new-workday-4")
      * @param Request $request
+     * @param Registry $workflows
      * @return Response
      */
-    public function newWorkDaytest(Request $request):Response
+    public function newWorkDaySummary(Registry $workflows):Response
     {
+        $wdr = $this->getRepo();
+        $id = $_POST['work_day']['id'];
+        $workday = $wdr->find($id);
+        $workflow = $workflows->get($workday);
 
-        return $this->render('workday/test.html.twig',array(
-            'test' => $request,
+        $form = $this->createForm(WorkDayType::class, $workday, array(
+            'places' => $workflow->getMarking($workday)->getPlaces()
+        ));
+
+        if ($form->isSubmitted() && $form->isValid()) {
+
+            $wd2 = $form->getData();
+
+            $entityManager = $this->getDoctrine()->getManager();
+
+//            if ($workflow->can($workday, 'add_completed_tasks'))
+//            {
+//                $workflow->apply($workday, 'add_completed_tasks');
+//                $entityManager->persist($workday);
+//               // $entityManager->flush();
+//            }
+
+            return $this->forward('App\Controller\WorkDayController::newWorkDaySummary',array(
+                'workday' => $workday,
+
+            ));
+        }
+
+        //TODO If valdation
+
+//        if (false)
+//        {
+//            $entityManager = $this->getDoctrine()->getManager();
+//
+//            $workflow->apply($workday, 'add_completed_tasks');
+//            $entityManager->persist($workday);
+//            $entityManager->flush();
+//        }
+
+        //todo else back to form2
+        dump($request);
+        return $this->render('workday/summary.html.twig',array(
+            'workday' => $request,
         ));
 
 
     }
+
 
     public function getRepo():WorkDayRepository
     {

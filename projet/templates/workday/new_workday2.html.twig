@@ -9,7 +9,7 @@
 <section>
     <h1>new workday 2</h1>
 
-    {{ form_start(form, {'action': path('new-workday-4'), 'method': 'POST'}) }}
+    {{ form_start(form, {'action': path('new-workday-3'), 'method': 'POST'}) }}
 
 
     {{ form_row(form.workers) }}
@@ -18,11 +18,14 @@
         {{ form_label(form.comment) }}
         {{ form_widget(form.comment) }}
     </div>
+    {{ form_row(form.id) }}
 
     {{ form_widget(form.summary) }}
 
 
-    {{ form_end(form, {'render_rest': false}) }}
+
+    {#{{ form_end(form, {'render_rest': false}) }}#}
+    {{ form_end(form) }}
 
 
 

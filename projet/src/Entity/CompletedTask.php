@@ -17,7 +17,7 @@ class CompletedTask
     private $id;
 
     /**
-     * @ORM\Column(type="time")
+     * @ORM\Column(type="time", nullable=true)
      */
     private $duration;
 

@@ -5,6 +5,7 @@ namespace App\Form;
 use App\Entity\Site;
 use App\Entity\WorkDay;
 use App\Entity\Worker;
+use App\Form\EventListener\NewWorkDaySubscriber;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
@@ -43,9 +44,10 @@ class WorkDayType extends AbstractType
             ));
 
             if($state === 'instantiated'){
-                $builder->add('workers', EntityType::class,array(
+                $builder->add('workers', EntityType::class, array(
                     'class' => Worker::class,
                     'multiple' => true,
+
                 ));
 
             }else{
@@ -66,11 +68,17 @@ class WorkDayType extends AbstractType
 
             ->add('summary',SubmitType::class,array(
 
+
             ))
             ->add('next',SubmitType::class,array(
 
             ))
+            ->add('id', HiddenType::class, array(
+                'data' => $workday->getId(),
+                'mapped' => false,
+            ))
         ;
+        $builder->addEventSubscriber(new NewWorkDaySubscriber());
     }
 
     public function configureOptions(OptionsResolver $resolver)

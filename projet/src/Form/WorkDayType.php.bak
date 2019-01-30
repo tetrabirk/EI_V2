@@ -1,0 +1,106 @@
+<?php
+
+namespace App\Form;
+
+use App\Entity\Site;
+use App\Entity\WorkDay;
+use App\Entity\Worker;
+use App\Form\EventListener\NewWorkDaySubscriber;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\FormEvents;
+use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Translation\Loader\ArrayLoader;
+use Symfony\Component\Translation\Translator;
+
+class WorkDayType extends AbstractType
+{
+
+    private $workday;
+
+    public function buildForm(FormBuilderInterface $builder, array $options)
+    {
+        $locale = 'fr_BE';
+
+        $this->workday = $builder->getData() ;
+        $state = key($options['places']);
+        dump($state);
+        $translator = new Translator($locale);
+        $translator->addLoader('array',new ArrayLoader());
+
+        $builder
+            ->add('date', DateType::class,array(
+                'widget' => 'choice',
+                'data' => new \DateTime()
+
+            ))
+
+            ->add('site',EntityType::class,array(
+                'class' => Site::class,
+            ));
+
+            if($state === 'instantiated'){
+                $builder->add('workers', EntityType::class, array(
+                    'class' => Worker::class,
+                    'multiple' => true,
+
+                ));
+
+            }else{
+                $builder->add('workers', CollectionType::class,array(
+                    'entry_type' => WorkerWorkDayType::class,
+                    'entry_options' => array(
+                        'workday' => $this->workday,
+                    ),
+                    'allow_extra_fields' => true,
+                ));
+            }
+        $builder
+
+            ->add('comment', TextareaType::class,array(
+                'required' => false,
+
+            ))
+
+            ->add('summary',SubmitType::class,array(
+
+
+            ))
+            ->add('next',SubmitType::class,array(
+
+            ))
+            ->add('id', HiddenType::class, array(
+                'data' => $this->workday->getId(),
+                'mapped' => false,
+            ))
+        ;
+        $builder
+            ->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event){
+            $form = $event->getForm();
+            $this->workday = $form->getConfig()->getData();
+//            if($state === 'to_complete'){
+//                $form->get('date')->setData($workday->getDate());
+//            }
+            })
+            ->addEventListener(FormEvents::PRE_SUBMIT,function (FormEvent $event){
+            $form =$event->getForm();
+            $form->get('date')->setData($this->workday->getDate());
+            });
+    }
+
+    public function configureOptions(OptionsResolver $resolver)
+    {
+        $resolver->setRequired('places');
+        $resolver->setDefaults([
+            'data_class' => WorkDay::class,
+            'csrf_protection' => false,
+        ]);
+    }
+}

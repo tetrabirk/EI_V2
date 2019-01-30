@@ -15,7 +15,6 @@ framework:
                 - instantiated
                 - to_complete
                 - completed
-                - summary
                 - unvalidated
                 - validated
                 - flagged
@@ -26,16 +25,13 @@ framework:
                 add_completed_tasks:
                     from: to_complete
                     to:   completed
-                see_summary:
-                    from: completed
-                    to:   summary
                 submit_admin:
                     guard: "is_granted('ROLE_ADMIN')"
-                    from: summary
+                    from: completed
                     to:   validated
                 submit:
                     guard: "is_granted('ROLE_WORKER')"
-                    from: summary
+                    from: completed
                     to:   unvalidated
                 validate:
                     guard: "is_granted('ROLE_ADMIN')"
@@ -49,7 +45,6 @@ framework:
                     from:
                         - to_complete
                         - completed
-                        - summary
                         - unvalidated
                     to:   instantiated
                 modify_admin:

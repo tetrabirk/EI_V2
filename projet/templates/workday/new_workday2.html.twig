@@ -12,15 +12,14 @@
     {{ form_start(form, {'action': path('new-workday-3'), 'method': 'POST'}) }}
 
 
-    {{ form_row(form.workers) }}
+    {#{{ form_row(form.workers) }}#}
 
-    <div class="form-group">
-        {{ form_label(form.comment) }}
-        {{ form_widget(form.comment) }}
-    </div>
-    {{ form_row(form.id) }}
+    {#<div class="form-group">#}
+        {#{{ form_label(form.comment) }}#}
+        {#{{ form_widget(form.comment) }}#}
+    {#</div>#}
 
-    {{ form_widget(form.summary) }}
+    {#{{ form_widget(form.next) }}#}
 
 
 

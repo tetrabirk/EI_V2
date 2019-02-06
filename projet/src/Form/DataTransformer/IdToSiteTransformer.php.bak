@@ -1,0 +1,52 @@
+<?php
+/**
+ * Created by PhpStorm.
+ * User: Ludovic
+ * Date: 04-Feb-19
+ * Time: 19:15
+ */
+
+namespace App\Form\DataTransformer;
+
+use App\Entity\Site;
+use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\Form\DataTransformerInterface;
+use Symfony\Component\Form\Exception\TransformationFailedException;
+
+class IdToSiteTransformer implements DataTransformerInterface
+{
+    private $entityManager;
+
+    public function __construct(EntityManagerInterface $entityManager)
+    {
+        $this->entityManager = $entityManager;
+    }
+
+    public function transform($site)
+    {
+        if(null === $site){
+            return 'site id is null';
+        }
+
+        return $site->getId();
+    }
+
+    public function reverseTransform($siteId)
+    {
+
+        if(!$siteId){
+            return;
+        }
+        $site = $this->entityManager
+            ->getRepository(Site::class)
+            ->findOneBy(['id'=>$siteId]);
+        if(null === $site){
+            throw new TransformationFailedException(sprintf(
+                'An issu with the numer "%s" does not exist!',
+                $siteId
+            ));
+        }
+        return $site;
+    }
+}

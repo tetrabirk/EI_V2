@@ -7,6 +7,7 @@ namespace App\Form;
 use App\Entity\Site;
 use App\Entity\WorkDay;
 use App\Entity\Worker;
+use App\Form\DataTransformer\IdToSiteTransformer;
 use App\Form\EventListener\NewWorkDaySubscriber;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
@@ -15,6 +16,7 @@ use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
@@ -26,7 +28,6 @@ class WorkDayType extends AbstractType
 {
 
     private $workday;
-    private $step;
 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
@@ -34,24 +35,17 @@ class WorkDayType extends AbstractType
 
         $this->workday = $builder->getData() ;
 
-
-        $this->step = $options['step'];
-        dump($this->step);
         $translator = new Translator($locale);
         $translator->addLoader('array',new ArrayLoader());
 
         $builder
+
             ->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event){
                 $form = $event->getForm();
                 $workday = $form->getConfig()->getData();
-                dump($workday);
-                if($this->step === 3){
-                    $form
-                        ->add('comment', TextareaType::class,array(
-                        'required' => false,
-                    ));
-                }
-                elseif(!$workday || $workday->getState() === null || $workday->getState() === 'instantiated')
+                $state = $workday->getState();
+
+                if($state === null || $state === 'instantiated')
                 {
                     $form
                         ->add('date', DateType::class,array(
@@ -61,27 +55,15 @@ class WorkDayType extends AbstractType
                         ->add('site',EntityType::class,array(
                             'class' => Site::class,
                         ))
+
                         ->add('workers', EntityType::class, array(
                             'class' => Worker::class,
                             'multiple' => true,
                         ));
-                }elseif($workday->getState() === 'to_complete'){
+
+                }elseif($state === 'to_complete' || $state === 'add_completed_tasks' ){
                     $form
-                        ->add('date', HiddenType::class,array(
-                            'data' => $workday->getDate()->date
-                        ))
-                        ->add('site', HiddenType::class,array(
-                            'data' => $workday->getSite()
-                        ))
-                        ->add('author', HiddenType::class,array(
-                            'data' => $workday->getAuthor()
-                        ))
-                        ->add('state', HiddenType::class,array(
-                            'data' => $workday->getState()
-                        ))
-                        ->add('flagged', HiddenType::class,array(
-                            'data' => $workday->getFlags()
-                        ))
+
                         ->add('workers', CollectionType::class,array(
                             'entry_type' => WorkerWorkDayType::class,
                             'entry_options' => array(
@@ -93,17 +75,18 @@ class WorkDayType extends AbstractType
                             'required' => false,
 
                         ));
+
                 }
-            })
+            });
 
-            ->add('next',SubmitType::class,array(
+        $builder ->add('next',SubmitType::class,array(
 
-            ));
+        ));
+
     }
 
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setRequired('step');
         $resolver->setDefaults([
             'data_class' => WorkDay::class,
             'csrf_protection' => false,

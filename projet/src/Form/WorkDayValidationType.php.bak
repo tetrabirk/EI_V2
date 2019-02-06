@@ -1,0 +1,70 @@
+<?php
+
+//https://stackoverflow.com/questions/25291607/symfony2-how-to-stop-form-handlerequest-from-nulling-fields-that-dont-exist
+
+namespace App\Form;
+
+use App\Entity\Site;
+use App\Entity\WorkDay;
+use App\Entity\Worker;
+use App\Form\DataTransformer\IdToSiteTransformer;
+use App\Form\EventListener\NewWorkDaySubscriber;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\FormEvents;
+use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Translation\Loader\ArrayLoader;
+use Symfony\Component\Translation\Translator;
+
+class WorkDayValidationType extends AbstractType
+{
+
+    private $workday;
+    private $step;
+    private $transformer;
+
+    public function __construct(IdToSiteTransformer $transformer)
+    {
+        $this->transformer =$transformer;
+    }
+
+    public function buildForm(FormBuilderInterface $builder, array $options)
+    {
+        $locale = 'fr_BE';
+
+        $translator = new Translator($locale);
+        $translator->addLoader('array',new ArrayLoader());
+
+        $builder
+            //->add('date', DateType::class,array(
+                //'required' => false,
+            //))
+            ->add('comment', TextareaType::class,array(
+                'required' => false,
+            ))
+            ->add('site',TextType::class,array(
+            ))
+            ->get('site')->addModelTransformer($this->transformer);
+
+
+    }
+
+    public function configureOptions(OptionsResolver $resolver)
+    {
+        //$resolver->setRequired('step');
+        $resolver->setDefaults([
+            'data_class' => WorkDay::class,
+            'csrf_protection' => false,
+            'allow_extra_fields' => true,
+
+        ]);
+    }
+}

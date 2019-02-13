@@ -9,7 +9,7 @@
 <section>
     <h1>new workday 2</h1>
 
-    {{ form_start(form, {'action': path('new-workday-2', {'workdayId': form.vars.data.id}), 'method': 'POST'}) }}
+    {{ form_start(form, {'action': path('add-completed-tasks', {'workdayId': form.vars.data.id}), 'method': 'POST'}) }}
 
 
     {#{{ form_row(form.workers) }}#}
@@ -28,7 +28,7 @@
 
 
 
-    {#TODO virer ce script d'ici#}
+    {# TODO virer ce script d'ici #}
     <script
             src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
             integrity="sha256-3edrmyuQ0w65f8gfBsqowzjJe2iM6n0nKciPUp8y+7E="

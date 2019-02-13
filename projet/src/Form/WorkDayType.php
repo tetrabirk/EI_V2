@@ -59,9 +59,12 @@ class WorkDayType extends AbstractType
                         ->add('workers', EntityType::class, array(
                             'class' => Worker::class,
                             'multiple' => true,
+                        ))
+                        ->add('next',SubmitType::class,array(
+
                         ));
 
-                }elseif($state === 'to_complete' || $state === 'add_completed_tasks' ){
+                }elseif($state === 'to_complete' ){
                     $form
 
                         ->add('workers', CollectionType::class,array(
@@ -73,15 +76,27 @@ class WorkDayType extends AbstractType
                         ))
                         ->add('comment', TextareaType::class,array(
                             'required' => false,
+                        ))
+                        ->add('next',SubmitType::class,array(
 
                         ));
 
+                }elseif($state === 'edition' ){
+                    $form
+                        ->add('date', DateType::class,array(
+                            'widget' => 'choice',
+                            'data' => new \DateTime()
+                        ))
+
+                        ->add('workers', EntityType::class, array(
+                            'class' => Worker::class,
+                            'multiple' => true,
+                        ))
+                        ->add('next',SubmitType::class,array(
+
+                        ));
                 }
             });
-
-        $builder ->add('next',SubmitType::class,array(
-
-        ));
 
     }
 

@@ -10,9 +10,9 @@
     <h1>new workday Summary </h1>
 
     {{ dump(workday) }}
-    {#<a href="{{ path('new-workday-2', {'workdayId': workday.id , 'action': 'back'}) }}">Back</a>#}
-    {#<br/>#}
-    {#<a href="{{ path('new-workday-2', {'workdayId': workday.id , 'action': 'submit'}) }}">OK!</a>#}
+    <a href="{{ path('workday-edit', {'workdayId': workday.id }) }}">Back</a>
+    <br/>
+    <a href="{{ path('workday-submit', {'workdayId': workday.id }) }}">OK!</a>
 
 </section>
 {% endblock %}

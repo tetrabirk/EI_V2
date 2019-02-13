@@ -3,23 +3,26 @@
 namespace App\Controller;
 
 use App\Entity\WorkDay;
-use App\Form\WorkDay2Type;
 use App\Form\WorkDaySearchType;
-use App\Form\WorkDay1Type;
 use App\Form\WorkDayType;
-use App\Form\WorkDayValidationType;
 use App\Repository\WorkDayRepository;
-use Doctrine\ORM\EntityManager;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\DependencyInjection\Dumper\GraphvizDumper;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Workflow\Exception\TransitionException;
 use Symfony\Component\Workflow\Registry;
 
 class WorkDayController extends AbstractController
 {
+
+    private $workFlows;
+
+    public function __construct(Registry $workFlows)
+    {
+        $this->workFlows = $workFlows;
+    }
+
+
     /**
      * @Route("/workday/{id}", defaults={"id"=null}, name="workday")
      *
@@ -38,24 +41,22 @@ class WorkDayController extends AbstractController
 
         $workDays = $this->getRepo()->getWorkdayList();
         $form = $this->createForm(WorkDaySearchType::class);
-//TODO make function out of this
+
         return $this->render('workday/workday_all.html.twig', array(
             'workdays' => $workDays,
             'form' => $form->createView(),
         ));
-
-
     }
 
     /**
      * @Route("/s-wd/",name="wd-search")
-     * @param Request
+     * @param Request $request
      * @return Response
      */
     public function search(Request $request):Response{
 
         $search = $request->query->get('work_day_search');
-        dump($request);
+
         //TODO make function out of this
 
         $dateMin = $this->arrayToDate($search['dateMin']);
@@ -68,7 +69,6 @@ class WorkDayController extends AbstractController
 
         $workDays= $this->getRepo()->searchWorkDays($dateMin,$dateMax,$site,$author,$workers,$validated,$flagged);
         $form = $this->createForm(WorkDaySearchType::class);
-//TODO make function out of this
 
         return $this->render('workday/workday_all.html.twig', array(
             'workdays' => $workDays,
@@ -77,34 +77,24 @@ class WorkDayController extends AbstractController
     }
 
     /**
-     * @Route("/new-entry/",name="new-workday")
-     * @param Request $request, Registry $workflows
+     * @Route("/new-workday/",name="new-workday")
+     * @param Request $request
      * @return Response
      */
-    public function newWorkDayStepOne(Request $request, Registry $workflows):Response
+    public function newWorkDay(Request $request):Response
     {
         $workday = new WorkDay();
-        $workflow = $workflows->get($workday);
 
-        $form = $this->createForm(WorkDayType::class, $workday, array(
-
-         ));
-
+        $form = $this->createForm(WorkDayType::class, $workday);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $workday = $form->getData();
             $workday->setAuthor($this->getUser());
-            $entityManager = $this->getDoctrine()->getManager();
 
-            if ($workflow->can($workday, 'add_basic_infos'))
-            {
-                $workflow->apply($workday, 'add_basic_infos');
-                $entityManager->persist($workday);
-                $entityManager->flush();
-            }
+            $this->changeState($workday,'add_basic_infos');
 
-            return $this->forward('App\Controller\WorkDayController::newWorkDayStepTwo',array(
+            return $this->forward('App\Controller\WorkDayController::addCompletedTasks',array(
                 'workdayId' => $workday->getId(),
             ));
         }
@@ -114,80 +104,151 @@ class WorkDayController extends AbstractController
         ));
     }
 
+    public function handleForm()
+    {
+        //TODO à voire
+    }
+
     /**
-     * @Route("/new-entry-2/{workdayId}", defaults={"workdayId"=null} ,name="new-workday-2")
+     * @Route("/add-completed-tasks/{workdayId}", defaults={"workdayId"=null} ,name="add-completed-tasks")
      * @param $workdayId
      * @param Request $request
-     * @param Registry $workflows
      * @return Response
      */
-    public function newWorkDayStepTwo( Request $request,  Registry $workflows, $workdayId):Response
+    public function addCompletedTasks(Request $request, $workdayId):Response
     {
         if($workdayId !==null) {
             $workday = $this->getRepo()->findOneBy(['id'=>$workdayId]);
         }else{
             $workday = new WorkDay();
         }
-        $form = $this->createForm(WorkDayType::class, $workday, array(
-        ));
 
+        $form = $this->createForm(WorkDayType::class, $workday);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-
             $workday = $form->getData();
 
-            $workflow = $workflows->get($workday);
+            $this->changeState($workday,'add_completed_tasks');
 
-            $entityManager = $this->getDoctrine()->getManager();
-
-            if ($workflow->can($workday, 'add_completed_tasks'))
-            {
-                $workflow->apply($workday, 'add_completed_tasks');
-                $entityManager->persist($workday);
-                $entityManager->flush();
-            }
-
-            return $this->forward('App\Controller\WorkDayController::newWorkDayValidation',array(
+            return $this->forward('App\Controller\WorkDayController::summary',array(
                 'workday' => $workday,
             ));
         }
 
-        return $this->render('workday/new_workday2.html.twig',array(
+        return $this->render('workday/add_completed_tasks.html.twig',array(
             'form' => $form->createView()
         ));
     }
 
     /**
-     * @Route("/new-entry-validation/",name="new-workday-3")
-     * @param Request $request
+     * @Route("/workday-summary/",name="workday-summary")
+     * @param WorkDay $workday
      * @return Response
      */
-    public function newWorkDayValidation($workday, Registry $workflows):Response
+    public function summary($workday):Response
     {
         return $this->render('workday/summary.html.twig',array(
             'workday' => $workday,
         ));
+    }
+    /**
+     * @Route("/workday-edit/{workdayId}", defaults={"workdayId"=null},name="workday-edit")
+     * @param $workdayId
+     * @param Request $request
+     * @return Response
+     */
+    public function edition(Request $request, $workdayId):Response
+    {
+        $workday = $this->getWorkday($workdayId);
 
+        if($this->getUser()->isGranted('ROLE_ADMIN')){ //I Dont know if i can do this
+            $this->changeState($workday,'modify_admin');
+        }else{
+            $this->changeState($workday,'modify');
+        }
 
+        $form = $this->createForm(WorkDayType::class, $workday);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $workday = $form->getData();
+
+            $this->changeState($workday,'add_basic_infos');
+
+            return $this->forward('App\Controller\WorkDayController::addCompletedTasks',array(
+                'workdayId' => $workday->getId(),
+            ));
+        }
+
+        return $this->render('workday/edit_workday.html.twig',array(
+            'form' => $form->createView()
+        ));
+    }
+
+    /**
+     * @Route("/new-entry-summary/",name="workday-summary")
+     * @param WorkDay $workday
+     * @return Response
+     */
+    public function workDaySummary(WorkDay $workday):Response
+    {
+
+        return $this->render('workday/summary.html.twig',array(
+            'workday' => $workday,
+        ));
+    }
+
+    /**
+     * @Route("/workday-submit/{workdayId}", defaults={"workdayId"=null},name="workday-submit")
+     * @param $workdayId
+     * @return Response
+     */
+    public function submit($workdayId):Response
+    {
+        $workday = $this->getWorkday($workdayId);
+
+        if($this->getUser()->isGranted('ROLE_ADMIN')){ //I Dont know if i can do this
+            $this->changeState($workday,'validated');
+        }else{
+            $this->changeState($workday,'unvalidated');
+        }
+
+        return $this->forward('App\Controller\BaseController::homepage');
+    }
+
+    private function getWorkday($id)
+    {
+        if($id !==null) {
+            return $this->getRepo()->findOneBy(['id'=>$id]);
+        }
+        return $this->forward('App\Controller\WorkDayController::newWorkDay');
 
     }
 
     /**
-     * @Route("/new-entry-summary/",name="new-workday-4")
-     * @param Request $request
-     * @param Registry $workflows
-     * @return Response
+     * @param $workday
+     * @param $state
+     * @return bool
      */
-    public function newWorkDaySummary(WorkDay $workday):Response
+    private function changeState($workday,$transition):bool
     {
-        return $this->render('workday/summary.html.twig',array(
-            'workday' => $workday,
-        ));
+        $entityManager = $this->getDoctrine()->getManager();
+        $workFlow = $this->workFlows->get($workday);
+
+        if ($workFlow->can($workday, $transition))
+        {
+            $workFlow->apply($workday, $transition);
+            $entityManager->persist($workday);
+            $entityManager->flush();
+            return true;
+        }
+
+        return false;
     }
 
 
-    public function getRepo():WorkDayRepository
+    private function getRepo():WorkDayRepository
     {
         /** @var WorkDayRepository $wdr */
         $wdr = $this->getDoctrine()->getRepository(WorkDay::class);

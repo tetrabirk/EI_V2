@@ -743,7 +743,7 @@ html body {
   #nav ul > li a {
     color: white;
   }
-  #nav .new-entry {
+  #nav .new-workday {
     display: block;
     border-radius: 50%;
     background-color: white;
@@ -757,13 +757,13 @@ html body {
     color: #14413C;
     margin: -13px 70px 0 0;
   }
-  #nav .new-entry:hover,
-  #nav .new-entry:active,
-  #nav .new-entry:focus {
+  #nav .new-workday:hover,
+  #nav .new-workday:active,
+  #nav .new-workday:focus {
     background-color: #14413C;
     color: white;
   }
-  .scrolled #nav .new-entry {
+  .scrolled #nav .new-workday {
     margin: -18px 70px 0 0;
   }
   .scrolled #nav {

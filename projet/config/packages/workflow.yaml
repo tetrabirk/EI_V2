@@ -18,9 +18,12 @@ framework:
                 - unvalidated
                 - validated
                 - flagged
+                - edition
             transitions:
                 add_basic_infos:
-                    from: instantiated
+                    from:
+                        - instantiated
+                        - edition
                     to:   to_complete
                 add_completed_tasks:
                     from: to_complete
@@ -46,13 +49,16 @@ framework:
                         - to_complete
                         - completed
                         - unvalidated
-                    to:   instantiated
+                    to:   edition
                 modify_admin:
                     guard: "is_granted('ROLE_ADMIN')"
                     from:
+                        - to_complete
+                        - completed
+                        - unvalidated
                         - validated
                         - flagged
-                    to:   instantiated
+                    to:   edition
                 ignore:
                     guard: "is_granted('ROLE_ADMIN')"
                     from: flagged

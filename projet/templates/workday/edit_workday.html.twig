@@ -1,0 +1,33 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}TEST{% endblock %}
+{% block aside_left %}
+
+{% endblock %}
+{% block content %}
+
+<section>
+    <h1>new workday </h1>
+
+    {{ form_start(form, {'action': path('workday-edit', {'workdayId': form.vars.data.id}),, 'method': 'POST'}) }}
+    {#<div class="form-group">#}
+        {#{{ form_label(form.date) }}#}
+        {#{{ form_widget(form.date) }}#}
+    {#</div>#}
+    {#<div class="form-group">#}
+        {#{{ form_label(form.site) }}#}
+        {#{{ form_widget(form.site) }}#}
+    {#</div>#}
+    {#<div class="form-group">#}
+        {#{{ form_label(form.workers) }}#}
+        {#{{ form_widget(form.workers) }}#}
+    {#</div>#}
+
+    {#{{ form_widget(form.next) }}#}
+
+
+    {#{{ form_end(form, {'render_rest': false}) }}#}
+    {{ form_end(form) }}
+
+</section>
+{% endblock %}

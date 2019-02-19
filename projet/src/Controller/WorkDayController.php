@@ -162,6 +162,7 @@ class WorkDayController extends AbstractController
     {
         $workday = $this->getWorkday($workdayId);
 
+        dump($this->getUser());
         if($this->getUser()->isGranted('ROLE_ADMIN')){ //I Dont know if i can do this
             $this->changeState($workday,'modify_admin');
         }else{

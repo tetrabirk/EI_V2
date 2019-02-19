@@ -8,7 +8,9 @@
 <head>
     <meta charset="UTF-8">
 
-    {% include 'lib/css.html.twig' %}
+    {#{% include 'lib/css.html.twig' %}#}
+
+    {{ encore_entry_link_tags('app') }}
 
     <title>{% block title %}WD LOG - {{ company_name }}{% endblock %}</title>
 
@@ -64,8 +66,8 @@
 </footer>
 
 
-    {% include 'lib/js.html.twig' %}
-
+    {#{% include 'lib/js.html.twig' %}#}
+    {{ encore_entry_script_tags('app') }}
 
 
 {% endblock %}

@@ -1,0 +1,26 @@
+{% extends "base.html.twig" %}
+
+{% block body_classes %}
+    page_abo
+{% endblock %}
+
+{% block aside_left %}
+
+{% endblock %}
+
+{% block content %}
+    <section>
+        <h2>
+            {% trans %}About WD LOG{% endtrans %}
+        </h2>
+        <div>
+            <p>
+                {% trans %}About text{% endtrans %}
+            </p>
+        </div>
+    </section>
+{% endblock %}
+
+{% block aside_right %}
+    {% trans %}contact-infos{% endtrans %}
+{% endblock %}

@@ -43,7 +43,7 @@ class WorkDayController extends AbstractController
         $form = $this->createForm(WorkDaySearchType::class);
 
         return $this->render('workday/workday_all.html.twig', array(
-            'workdays' => $workDays,
+            'workDays' => $workDays,
             'form' => $form->createView(),
         ));
     }

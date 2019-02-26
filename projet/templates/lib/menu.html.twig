@@ -16,14 +16,14 @@
             <li><a href="/Matériaux/">{% trans %}Matériaux{% endtrans %}</a></li>
         </ul>
         <ul class="navigation-right">
-            <li><a class ="new-workday" href="{{ path('new-workday') }}">N</a></li>
-            <li><a href="/notification/">n</a></li>
-            <li><a href="/param/">p</a></li>
+            <li><a class ="new-workday" href="{{ path('new-workday') }}"><i class="far fa-file"></i></a></li>
+            <li><a href="/notification/"><i class="far fa-flag"></i></a></li>
+            <li><a href="/param/"><i class="fas fa-cog"></i></a></li>
 
         </ul>
     {% else %}
         <ul class="navigation-left">
-            <li><a href="/About/">{% trans %}À Propos{% endtrans %}</a></li>
+            <li><a href="{{ path('about') }}">{% trans %}À Propos{% endtrans %}</a></li>
         </ul>
     {% endif %}
 </nav>

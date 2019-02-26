@@ -1,0 +1,39 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}TEST{% endblock %}
+{% block aside_left %}
+    {{ form_start(form, {'action': path('wd-search'), 'method': 'GET'}) }}
+    {{ form_rest(form) }}
+    {{ form_end(form) }}
+{% endblock %}
+{% block content %}
+{% dump workDays %}
+<section>
+    <h1>WORKDAYS : {{workDays|length }}</h1>
+    <hr>
+    <h2>Workday List</h2>
+    {% for workDay in workDays  %}
+        <div>
+            <a href="{{ path('workday', {'id': workDay.id}) }}">
+                <h3>{{ workDay.date|date("d/m/Y") }} - {{ workDay.site.shortName }} {{ workDay.site.name }}</h3>
+            </a>
+            <ul>
+                <li>author: {{ workDay.author }}</li>
+                <li>workers:
+                    <ul>
+                        {% for worker in workDay.workers %}
+                            <li>{{ worker.name }}</li>
+                        {% endfor %}
+                    </ul>
+                </li>
+                <li>{{ workDay.validated ? 'Validated':'Not validated' }}</li>
+                <li>{{ workDay.comment is empty ? 'No Comment':'Comment' }}</li>
+                {#<li>{{ workDay.photo is empty ? 'No Comment':'Comment' }}</li>#}
+                <li>{{ workDay.flagged ? 'Flagged':'Not flagged' }}</li>
+
+            </ul>
+        </div>
+    {% endfor %}
+
+</section>
+{% endblock %}

@@ -23,6 +23,7 @@ class WorkDayRepository extends ServiceEntityRepository
         $qb = $this->createQueryBuilder('wd');
 
         $this->addBasicJoins($qb);
+        $qb->orderBy('wd.date', 'DESC');
 
         $query = $qb->getQuery();
         return $query->getResult();
@@ -41,7 +42,7 @@ class WorkDayRepository extends ServiceEntityRepository
         $qb->setParameter('id',$id);
 
         $query = $qb->getQuery();
-        return $query->getResult();
+        return $query->getOneOrNullResult();
 
     }
 
@@ -97,7 +98,7 @@ class WorkDayRepository extends ServiceEntityRepository
         }
 
        // $qb->groupBy('wd.id');
-       // $qb->orderBy('wd.date DESC'); //TODO pas moyen de changer le sens (???)
+        $qb->orderBy('wd.date', 'DESC');
         $query = $qb->getQuery();
         return $query->getResult();
     }

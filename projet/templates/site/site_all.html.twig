@@ -22,37 +22,20 @@
     <hr>
     <h2>Site List</h2>
     {% for site in sites  %}
-        <h3>name:{{ site.shortName }} - {{ site.name }}</h3>
+        <a href="{{ path('site', {'id': site.id} ) }}"><h3>name:{{ site.shortName }} - {{ site.name }}</h3></a>
         <div>{{ site.address }} - {{ site.postCode }} {{ site.locality }} - {{ site.country }}</div>
         <div>is Active: {{ site.active ? '✅':'❌' }}</div>
+        <div> first work day :</div>
         <div> last work day :</div>
-        <h4>participants</h4>
-        <ul>
-            {% for participant in site.participations %}
-                <li>
-                    <span>{{ participant.person }} : {{ participant.role }}</span>
-                </li>
-            {% endfor %}
-        </ul>
 
-        <h4>workdays:</h4>
-        <ul>
-            {% for workDay in site.workDays %}
-                <li>
-                    <span>{{workDay.date|date("d/m/Y")}}</span>
-
-                </li>
-            {% endfor %}
-        </ul>
-        <h4>flags ?</h4>
-            <ul>
-                {% for wd in site.workDays if wd.flagged %}
-                    {% for flag in wd.flags if (flag.viewed == false) %}
-                        <li>{{ flag.comment }}</li>
-
-                    {% endfor %}
+        <ul>{% set flags_count = 0%}
+            {% for wd in site.workDays if wd.flagged %}
+                {% for flag in wd.flags if (flag.viewed == false) %}
+                   {% set flags_count = flags_count + 1 %}
                 {% endfor %}
-            </ul>
+            {% endfor %}
+        </ul>
+        <div>flags : {{ flags_count }}</div>
 
         <hr>
 

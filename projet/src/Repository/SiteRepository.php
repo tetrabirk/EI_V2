@@ -78,7 +78,7 @@ class SiteRepository extends ServiceEntityRepository
     public function searchSites($searchString, $firstDayMin,$firstDayMax,$lastDayMin,$lastDayMax,$distance,$finished,$active,$flagged)
     {
         $qb = $this->createQueryBuilder('s');
-        $this->addBasicJoins($qb);
+        $this->addAllJoins($qb);
         $string = '%' . $searchString . '%';
 
         $qb->where('s.name LIKE :string');
@@ -149,9 +149,14 @@ class SiteRepository extends ServiceEntityRepository
     {
         $qb->leftJoin('s.workDays', 'wd')->addSelect('wd');
         $qb->leftJoin('wd.author', 'au')->addSelect('au');
+
+
+    }
+    public function addAllJoins(QueryBuilder $qb): void
+    {
+        $this->addBasicJoins($qb);
         $qb->leftJoin('wd.flags', 'fl')->addSelect('fl');
         $qb->leftJoin('s.participations', 'pa')->addSelect('pa');
         $qb->leftJoin('pa.person', 'pe')->addSelect('pe');
-
     }
 }

@@ -34,4 +34,18 @@ class BaseController extends AbstractController
             )
         ));
     }
+    /**
+     * @Route("/about", name="about")
+     *
+     * @return Response
+     */
+
+    public function about():Response
+    {
+        $user = get_current_user();
+        dump('test');
+
+        return $this->render('about.html.twig', array(
+        ));
+    }
 }

@@ -1,3 +1,5 @@
+#php bin/console translation:update --force fr_BE --output-format yml
+
 'Bienvenue %username%': 'Bienvenue %username%'
 '{0} Vous n''avez pas de notification|{1} Vous avez une notifications|]1,Inf[ Vous avez %count% notifications': '{0} Vous n''avez pas de notification|{1} Vous avez une notifications|]1,Inf[ Vous avez %count% notifications'
 'Toutes les notifications': 'Toutes les notifications'
@@ -19,4 +21,7 @@ active: actif
 inactive: non-actif
 '{0} not validated|{1}validated': '{0} Non validé|{1}validated'
 '{0} not flagged|{1}flagged': '{0} Non Signalé|{1}Signalé'
---All--: --Tous--
+'--All--': '--Tous--'
+'About WD LOG': 'À Propos de WD LOG'
+'About text': 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus id tincidunt lorem. Donec vitae lacus non risus sagittis pulvinar quis et est. Nulla sagittis vel nibh eget auctor. Donec ac turpis et dolor mattis finibus fermentum at leo. Sed velit dolor, maximus nec elementum sit amet, blandit in massa. Morbi vitae orci bibendum, egestas arcu sed, scelerisque nunc. Proin sit amet massa tellus. Curabitur lobortis vulputate pharetra. Donec at gravida erat, at tempus est. Donec vehicula pharetra tempus. Quisque condimentum nec quam quis ullamcorper. Vivamus urna dolor, laoreet id quam et, egestas pulvinar diam. Fusce mi nulla, rhoncus a sodales vitae, varius sed sem.'
+contact-infos: 'Ludovic Leyens - info@wd-log.com'

@@ -1,0 +1,48 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}TEST{% endblock %}
+{% block aside_left %}
+
+{% endblock %}
+{% block content %}
+{% dump workDay %}
+<section>
+    <h1>{{ workDay.date|date("d/m/Y") }} - {{ workDay.site.shortName }}</h1>
+    <hr>
+    <h2> {{ workDay.site.name }}</h2>
+        <ul>
+            <li>{{ workDay.site.address }}</li>
+            <li>{{ workDay.site.latitude }},{{ workDay.site.longitude }} </li>
+            <li>{{ workDay.Site.Active ? 'Active':'Inactive' }}</li>
+            <li>Participant
+                <ul>
+                    {% for participant in workDay.site.participations %}
+                        <li>{{ participant.person }} - {{ participant.role }}</li>
+                    {% endfor %}
+                </ul>
+            </li>
+            <li>{{ workDay.author }}</li>
+            <li>workers:
+                <ul>
+                    {% for worker in workDay.workers %}
+                        <li>{{ worker.name }}</li>
+                        <li>
+                            Tasks
+                            <ul>
+                                {% for completedTask in worker.completedTasks if (completedTask.workday.id is same as(workDay.id) ) %}
+                                    <li>{{ completedTask.task }} - {{ completedTask.duration|date('H:i') }}</li>
+                                {% endfor %}
+                            </ul>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </li>
+            <li>{{ workDay.validated ? 'Validated':'Not validated' }}</li>
+            <li>{{ workDay.comment is empty ? 'No Comment':'Comment' }}</li>
+            {#<li>{{ workDay.photo is empty ? 'No Comment':'Comment' }}</li>#}
+            {#<li>{{ workDay.photo is empty ? 'No Comment':'Comment' }}</li>#}
+            <li>{{ workDay.flagged ? 'Flagged':'Not flagged' }}</li>
+        </ul>
+
+</section>
+{% endblock %}

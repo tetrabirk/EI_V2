@@ -48,6 +48,7 @@ class WorkDayFixtures extends BaseFixtures implements DependentFixtureInterface
             $workDay->setAuthor($author);
             $workDay->setSite($site);
             $workDay->setDate($date);
+            $workDay->setState("unvalidated");
             $workDay->setComment($this->faker->optional(0.2)->text(140));
             //TODO photo
             $this->addFlag($manager,$workDay);
@@ -134,6 +135,8 @@ class WorkDayFixtures extends BaseFixtures implements DependentFixtureInterface
             $flag->setViewed(random_int(0,1));
             $workDay->addFlag($flag);
             $workDay->setFlagged(1);
+            $workDay->setState("flagged");
+            $workDay->setValidated(true);
             $manager->persist($flag);
         }
     }

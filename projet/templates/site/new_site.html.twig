@@ -1,0 +1,17 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New Site{% endblock %}
+{% block aside_left %}
+
+{% endblock %}
+{% block content %}
+
+    <section>
+        <h1>new site </h1>
+
+        {{ form_start(form, {'action': path('new-site'), 'method': 'POST'}) }}
+
+        {{ form_end(form) }}
+
+    </section>
+{% endblock %}

@@ -10,6 +10,11 @@ use Doctrine\ORM\Mapping as ORM;
 class Admin extends User
 {
 
+    public function __construct()
+    {
+        $this->setRoles(array('ROLE_ADMIN'));
+    }
+
     public function __toString()
     {
         return 'ADMIN-'.$this->getName();

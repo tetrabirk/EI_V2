@@ -30,12 +30,15 @@ class Worker extends User
      */
     private $redactedWorkDays;
 
+
     public function __construct()
     {
         $this->completedTasks = new ArrayCollection();
         $this->workDays = new ArrayCollection();
         $this->redactedWorkDays = new ArrayCollection();
         $this->setActive(1);
+        $this->setRoles(array('ROLE_WORKER'));
+
     }
 
      /**

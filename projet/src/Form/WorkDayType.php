@@ -45,6 +45,7 @@ class WorkDayType extends AbstractType
                 $workday = $form->getConfig()->getData();
                 $state = $workday->getState();
 
+                dump($workday);
                 if($state === null || $state === 'instantiated')
                 {
                     $form
@@ -85,12 +86,7 @@ class WorkDayType extends AbstractType
                     $form
                         ->add('date', DateType::class,array(
                             'widget' => 'choice',
-                            'data' => new \DateTime()
-                        ))
-
-                        ->add('workers', EntityType::class, array(
-                            'class' => Worker::class,
-                            'multiple' => true,
+                            'data' => $workday->getDate(),
                         ))
                         ->add('next',SubmitType::class,array(
 
